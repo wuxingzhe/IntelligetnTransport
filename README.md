@@ -1,5 +1,6 @@
 # IntelligetnTransport
 An interesting project
+django 1.11.7 python 3.6
 IntelligentTrasnport/ 项目文件夹
   urls.py 定义项目的URL声明
 StreetCrowd/ 应用文件夹，也就是我们的实际项目
