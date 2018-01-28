@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22a4ca3a-7f50-41dd-9a20-ac8ca3e607ea" name="Default" comment="" />
+    <list default="true" id="22a4ca3a-7f50-41dd-9a20-ac8ca3e607ea" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/StreetCrowd/static/StreetCrowd/echarts/echarts.js" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,11 +15,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IntelligentTransport/settings.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="304">
-              <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="echarts.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/StreetCrowd/static/StreetCrowd/echarts/echarts.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-108065">
+              <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -97,6 +111,14 @@
               <item name="IntelligentTransport" type="b2602c69:ProjectViewProjectNode" />
               <item name="IntelligentTransport" type="462c0819:PsiDirectoryNode" />
               <item name="StreetCrowd" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="StreetCrowd" type="462c0819:PsiDirectoryNode" />
+              <item name="echarts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="IntelligentTransport" type="b2602c69:ProjectViewProjectNode" />
+              <item name="IntelligentTransport" type="462c0819:PsiDirectoryNode" />
+              <item name="StreetCrowd" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -109,6 +131,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="E:/mysite" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\IntelligentTransport\StreetCrowd\static\StreetCrowd\echarts" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -190,7 +217,15 @@
     <entry file="file://$PROJECT_DIR$/IntelligentTransport/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
-          <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StreetCrowd/static/StreetCrowd/echarts/echarts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-108065">
+          <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
           <folding />
         </state>
       </provider>
