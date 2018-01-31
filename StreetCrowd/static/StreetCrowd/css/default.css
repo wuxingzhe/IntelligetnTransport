@@ -1,0 +1,29 @@
+
+
+
+
+
+body {
+	font-family: 'Lato', Calibri, Arial, sans-serif;
+	color: #fff;
+	background-color:#91cfa1;
+	font-weight: 300;
+}
+
+a {
+	color: #f0f0f0;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #fff;
+}
+
+.side {
+	position:absolute;
+	top:0px;
+	left:0px;
+	width: 3.5%;
+	min-width: 3.5%;
+	box-shadow: 1px 0 rgba(0,0,0,0.1);
+}
