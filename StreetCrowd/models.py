@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class CarStatus(models.Model):
     car_id=models.IntegerField()
-    longitude = models.FloatField()
+    longitude=models.FloatField();
     latitude=models.FloatField()
     speed=models.IntegerField(default=0)
     direction=models.IntegerField(default=0)
@@ -13,4 +13,5 @@ class CarStatus(models.Model):
 
     def __str__(self):
         return str(self.car_id)+' '+str(self.longitude)+' '+str(self.latitude)
+
 
