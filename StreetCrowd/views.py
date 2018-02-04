@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
 # Create your views here.
-from StreetCrowd.utils import handle_upload_file
+from StreetCrowd.utils import handle_upload_file, handleFileThread
 
 
 def index(request):
@@ -21,7 +21,9 @@ def upload_data(request):
     cars_list = []
     if request.method == "POST":
         files = request.FILES.getlist('file')
-        handle_upload_file(files[0])
+        filepath=handle_upload_file(files[0])
+        file_thread = handleFileThread(1,filepath)
+        file_thread.start()
         # return HttpResponse('Successful')  # 此处简单返回一个成功的消息，在实际应用中可以返回到指定的页面中
     context = {'cars_list': cars_list}
     return render(request, 'StreetCrowd/index.html', context)
