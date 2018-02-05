@@ -25,6 +25,8 @@
 
 
 <script type="text/javascript">
+    var id=1;
+    var counter=0;
     var myChart = echarts.init(document.getElementById('main'));
     myChart.setOption({
         bmap: {
@@ -41,6 +43,31 @@
 
 
     });
+
+    //animation
+    window.requestAnimFrame = (function(){
+    return  window.requestAnimationFrame ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame ||
+          window.oRequestAnimationFrame ||
+          window.msRequestAnimationFrame ||
+          function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element){
+            window.setTimeout(callback, 1000 / 60);
+          };
+    })();
+
+    function animloop(){
+        if(counter==0)
+        {
+        }
+        else
+        {
+            if(counter==9)
+                counter=0;
+            else
+                counter+=1;
+        }
+    }
 </script>
 <div class="side">
     <nav class="dr-menu">
@@ -52,7 +79,12 @@
                         data-target="#DataLoadModal" style="background-color:#91cfa1;">Upload Data
                 </button>
             </li>
-            <li><a class="dr-icon dr-icon-camera" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
+            <li>
+                <button type="button" class="btn btn-primary dr-icon dr-icon-camera"
+                        onclick=" requestAnimFrame(animloop);" style="background-color:#91cfa1;">
+                    Start Animation
+                </button>
+            </li>
             <li><a class="dr-icon dr-icon-heart" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
             <li><a class="dr-icon dr-icon-bullhorn" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
             <li><a class="dr-icon dr-icon-download" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
