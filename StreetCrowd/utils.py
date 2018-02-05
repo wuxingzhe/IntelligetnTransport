@@ -17,15 +17,18 @@ class handleFileThread(threading.Thread):
         cnt = 0
         try:
             with transaction.atomic():
+                # CarStatus.objects.all().delete()
                 with open(self.filepath, 'r') as file:
                     for line in file:
                         cnt+=1
                         line = line.split()
                         if len(line):
                             CarStatus.objects.create(car_id=int(line[0]), longitude=float(line[3]), latitude=float(line[4]),
-                                                     speed=int(line[6]), direction=int(line[8]), time=line[2])
+                                                     speed=int(line[6]), direction=int(line[8]), time=line[2],timeID=int(line[-1]))
                         if(cnt%50==0):
                             print("%d data inserted"%(cnt))
+                    print("insertion complete")
+                    print("The size of Carstatus table: ",len(CarStatus.objects.all()))
         except Exception:
             print(Exception)
         # threadLock.release()

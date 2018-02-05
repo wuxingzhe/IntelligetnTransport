@@ -15,4 +15,3 @@ class CarStatus(models.Model):
 
     def __str__(self):
         return str(self.car_id)+' '+str(self.longitude)+' '+str(self.latitude)
-

@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
                 ('speed', models.IntegerField(default=0)),
                 ('direction', models.IntegerField(default=0)),
                 ('time', models.TimeField()),
+                ('timeID', models.IntegerField(db_index=True))
             ],
         ),
     ]
