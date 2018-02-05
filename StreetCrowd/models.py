@@ -10,6 +10,8 @@ class CarStatus(models.Model):
     speed=models.IntegerField(default=0)
     direction=models.IntegerField(default=0)
     time=models.TimeField()
+    timeID=models.IntegerField(default=0)
+    timeID.db_index=True
 
     def __str__(self):
         return str(self.car_id)+' '+str(self.longitude)+' '+str(self.latitude)
