@@ -30,8 +30,47 @@
         bmap: {
             center: [116.402030, 39.937034],
             zoom: 13.7,
-            roam: true
-
+            roam: true,
+            mapStyle: {
+                styleJson: [
+                    {
+                        "featureType": "all",
+                        "elementType": "geometry",
+                        "stylers": {
+                            "hue": "#007fff",
+                            "saturation": 89
+                        }
+                    },
+                    {
+                        "featureType": "highway",
+                        "elementType": "geometry.fill",
+                        "stylers": {
+                            "color": "#ffffffff"
+                        }
+                    },
+                    {
+                        "featureType": "green",
+                        "elementType": "all",
+                        "stylers": {
+                            "hue": "#5fc334"
+                        }
+                    },
+                    {
+                        "featureType": "subway",
+                        "elementType": "all",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    },
+                    {
+                        "featureType": "railway",
+                        "elementType": "all",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    }
+                ]
+            }
         },
         /*visualMap: {	// 视觉映射组件
             type: 'continuous',
@@ -39,42 +78,41 @@
             max: 100,
             calculable: true,
             inRange: {
-                color: ['#50a3ba','#eac736','#d94e5d']
+                color: ['#50a3ba', '#eac736', '#d94e5d']
             },
         },*/
         series: [{
             type: 'scatter',
             coordinateSystem: 'bmap',
-            data: [[116.43790643999972,39.94022588198814,0],[116.34165198405229,39.973305255877385,25],[116.40164940027276,39.89173627844831,-1,16],
-            [116.28036054892131,39.89758008796727,68]]
+            data: [[116.43790643999972, 39.94022588198814, 0], [116.34165198405229, 39.973305255877385, 25], [116.40164940027276, 39.89173627844831, -1, 16],
+                [116.28036054892131, 39.89758008796727, 68]]
         }]
 
 
     });
 
-    var id=1;//timeID
-    var counter=0;//统计动画次数，以0为周期
-    var lineId=0;//数据已经读到哪一行
-    var cars_list={{cars_list|safe}};
-    var length=cars_list.length;
-    var time_id={{time_id|safe}};
+    var id = 1;//timeID
+    var counter = 0;//统计动画次数，以0为周期
+    var lineId = 0;//数据已经读到哪一行
+    var cars_list ={{cars_list|safe}};
+    var length = cars_list.length;
+    var time_id ={{time_id|safe}};
 
     //animation
-    window.requestAnimFrame = (function(){
-    return  window.requestAnimationFrame ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame ||
-          window.oRequestAnimationFrame ||
-          window.msRequestAnimationFrame ||
-          function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element){
-            window.setTimeout(callback, 1000 / 60);
-          };
+    window.requestAnimFrame = (function () {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function (/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+                window.setTimeout(callback, 1000 / 60);
+            };
     })();
 
-    function animloop(){
-        if(counter==0)
-        {
-            var carsData=selectData();
+    function animloop() {
+        if (counter == 0) {
+            var carsData = selectData();
             myChart.setOption({
                 bmap: {
                     roam: true
@@ -85,7 +123,7 @@
                     max: 100,
                     calculable: true,
                     inRange: {
-                        color: ['#50a3ba','#eac736','#d94e5d']
+                        color: ['#50a3ba', '#eac736', '#d94e5d']
                     },
                 },
                 series: [{
@@ -103,25 +141,22 @@
             if(counter==29)
                 counter=0;
             else
-                counter+=1;
+                counter += 1;
         }
 
         requestAnimFrame(animloop);
     }
 
-    function selectData(){
-        var res=[];
-        for(var i=lineId;i<length;i++)
-        {
-            if(i==length-1)
-            {
-                lineId=0;
-                id=1;
+    function selectData() {
+        var res = [];
+        for (var i = lineId; i < length; i++) {
+            if (i == length - 1) {
+                lineId = 0;
+                id = 1;
                 break;
             }
 
-            if(time_id[i]!=id)
-            {
+            if (time_id[i] != id) {
                 id++;
                 break;
             }
