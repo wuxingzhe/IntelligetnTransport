@@ -25,8 +25,6 @@
 
 
 <script type="text/javascript">
-    var id=1;
-    var counter=0;
     var myChart = echarts.init(document.getElementById('main'));
     myChart.setOption({
         bmap: {
@@ -35,14 +33,31 @@
             roam: true
 
         },
+        visualMap: {	// 视觉映射组件
+            type: 'continuous',
+            min: 0,
+            max: 100,
+            calculable: true,
+            inRange: {
+                color: ['#50a3ba','#eac736','#d94e5d']
+            },
+        },
         series: [{
             type: 'scatter',
             coordinateSystem: 'bmap',
-            data: [[120, 30, 1]]
+            data: [[116.43790643999972,39.94022588198814,0],[116.34165198405229,39.973305255877385,25],[116.40164940027276,39.89173627844831,-1,16],
+            [116.28036054892131,39.89758008796727,68]]
         }]
 
 
     });
+
+    var id=1;//timeID
+    var counter=0;//统计动画次数，以0为周期
+    var lineId=0;//数据已经读到哪一行
+    var cars_list={{cars_list|safe}};
+    var length=car_list.length;
+    var time_id={{time_id|safe}};
 
     //animation
     window.requestAnimFrame = (function(){
@@ -59,6 +74,31 @@
     function animloop(){
         if(counter==0)
         {
+            var carsData=selectData();
+            myChart.setOption({
+                bmap: {
+                    center: [116.402030, 39.937034],
+                    zoom: 13.7,
+                    roam: true
+
+                },
+                visualMap: {	// 视觉映射组件
+                    type: 'continuous',
+                    min: 0,
+                    max: 100,
+                    calculable: true,
+                    inRange: {
+                        color: ['#50a3ba','#eac736','#d94e5d']
+                    },
+                },
+                series: [{
+                    type: 'scatter',
+                    coordinateSystem: 'bmap',
+                    data: carsData
+                }]
+
+
+            });
         }
         else
         {
@@ -67,6 +107,35 @@
             else
                 counter+=1;
         }
+
+        requestAnimFrame(animloop);
+    }
+
+    function selectData(){
+        var res=[];
+        for(var i=lineId;i<length;i++)
+        {
+            if(i==length-1)
+            {
+                lineId=0;
+                id=1;
+                break;
+            }
+
+            if(time_id[i]!=id)
+            {
+                id++;
+                break;
+            }
+            res.push(cars_list[i]);
+            lineId++;
+        }
+
+        return res;
+    }
+
+    function loadAnimaton() {
+        requestAnimFrame(animloop);
     }
 </script>
 <div class="side">
@@ -81,7 +150,7 @@
             </li>
             <li>
                 <button type="button" class="btn btn-primary dr-icon dr-icon-camera"
-                        onclick=" requestAnimFrame(animloop);" style="background-color:#91cfa1;">
+                        onclick="loadAnimaton()" style="background-color:#91cfa1;">
                     Start Animation
                 </button>
             </li>
