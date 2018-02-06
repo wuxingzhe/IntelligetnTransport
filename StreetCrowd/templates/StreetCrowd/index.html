@@ -110,30 +110,67 @@
             };
     })();
 
+    var ecModel = myChart._model;
+    var bmap = null;
+    ecModel.eachComponent('bmap', function (bmapModel) {
+        if(bmap == null){
+            bmap = bmapModel.__bmap;
+        }
+    });
+
     function animloop() {
         if (counter == 0) {
             var carsData = selectData();
-            myChart.setOption({
-                bmap: {
-                    roam: true
-                },
-                visualMap: {	// 视觉映射组件
-                    type: 'continuous',
-                    min: 0,
-                    max: 100,
-                    calculable: true,
-                    inRange: {
-                        color: ['#50a3ba', '#eac736', '#d94e5d']
+            if(bmap.getZoom()>15)
+            {
+                myChart.setOption({
+                    bmap: {
+                        roam: true
                     },
-                },
-                series: [{
-                    type: 'scatter',
-                    coordinateSystem: 'bmap',
-                    data: carsData
-                }]
+                    visualMap: {	// 视觉映射组件
+                        type: 'continuous',
+                        min: 0,
+                        max: 100,
+                        calculable: true,
+                        inRange: {
+                            color: ['#50a3ba', '#eac736', '#d94e5d']
+                        },
+                    },
+                    series: [{
+                        type: 'scatter',
+                        coordinateSystem: 'bmap',
+                        data: carsData,
+                        symbolSize: 4
+                    }]
 
 
-            });
+                });
+            }
+            else{
+                myChart.setOption({
+                    bmap: {
+                        roam: true
+                    },
+                    visualMap: {	// 视觉映射组件
+                        type: 'continuous',
+                        min: 0,
+                        max: 100,
+                        splitNumber: 5,
+                        inRange: {
+                            color: ['#d94e5d','#eac736','#50a3ba'].reverse()
+                        },
+                    },
+                    series: [{
+                        type: 'heatmap',
+                        coordinateSystem: 'bmap',
+                        data: carsData,
+
+                    }]
+
+
+                });
+            }
+
             counter++;
         }
         else
@@ -170,6 +207,10 @@
     function loadAnimaton() {
         requestAnimFrame(animloop);
     }
+
+    /*function setBaiduMapZoom(){
+        bmap.setZoom(16);
+    }*/
 </script>
 <div class="side">
     <nav class="dr-menu">
@@ -187,7 +228,11 @@
                     Start Animation
                 </button>
             </li>
-            <li><a class="dr-icon dr-icon-heart" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
+            <li>
+                <button type="button" class="btn btn-primary dr-icon dr-icon-heart"
+                        style="background-color:#91cfa1;">WXZHQ
+                </button>
+            </li>
             <li><a class="dr-icon dr-icon-bullhorn" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
             <li><a class="dr-icon dr-icon-download" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
             <li><a class="dr-icon dr-icon-settings" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
