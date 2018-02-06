@@ -77,10 +77,7 @@
             var carsData=selectData();
             myChart.setOption({
                 bmap: {
-                    center: [116.402030, 39.937034],
-                    zoom: 13.7,
                     roam: true
-
                 },
                 visualMap: {	// 视觉映射组件
                     type: 'continuous',
@@ -99,6 +96,7 @@
 
 
             });
+            counter++;
         }
         else
         {
