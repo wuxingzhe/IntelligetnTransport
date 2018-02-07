@@ -20,7 +20,7 @@
 </head>
 <body style="width:100%;height:100%;margin:0;">
 
-<div id="main" style="width:100%;height:100%;float:right;margin:0;">
+<div id="main" style="width:100%;height:100%;float:right;margin:0;" title="智能交通系统">
 </div>
 
 
@@ -116,6 +116,10 @@
         if(bmap == null){
             bmap = bmapModel.__bmap;
         }
+    });
+
+    bmap.addEventListener("mousemove", function(e){
+        document.getElementById("main").title=e.point.lng + ", " + e.point.lat;
     });
 
     function animloop() {
