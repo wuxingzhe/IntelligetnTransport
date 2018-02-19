@@ -15,7 +15,7 @@ def index(request):
         tmp=[]
         tmp.append(p.longitude)
         tmp.append(p.latitude)
-        tmp.append(100-p.speed)
+        tmp.append((100-p.speed)*(100-p.speed)*1.0/100)
         cars_list.append(tmp)
         time_id.append(p.timeID)
     context={'cars_list':json.dumps(cars_list) ,'time_id':json.dumps(time_id)}
