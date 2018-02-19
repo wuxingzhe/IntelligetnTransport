@@ -28,6 +28,7 @@ class handleFileThread(threading.Thread):
                         if(cnt%50==0):
                             print("%d data inserted"%(cnt))
                     print("insertion complete")
+                    CarStatus.objects.all().order_by("timeID")
                     print("The size of Carstatus table: ",len(CarStatus.objects.all()))
         except Exception:
             print(Exception)
