@@ -34,39 +34,45 @@
             mapStyle: {
                 styleJson: [
                     {
-                        "featureType": "all",
-                        "elementType": "geometry",
+                        "featureType": "land",
+                        "elementType": "all",
                         "stylers": {
-                            "hue": "#007fff",
-                            "saturation": 89
+                            "color": "#f3f3f3ff"
                         }
                     },
                     {
-                        "featureType": "highway",
-                        "elementType": "geometry.fill",
+                        "featureType": "water",
+                        "elementType": "all",
                         "stylers": {
-                            "color": "#ffffffff"
+                            "color": "#3d85c6ff"
                         }
                     },
                     {
                         "featureType": "green",
                         "elementType": "all",
                         "stylers": {
-                            "hue": "#5fc334"
-                        }
-                    },
-                    {
-                        "featureType": "subway",
-                        "elementType": "all",
-                        "stylers": {
-                            "visibility": "off"
+                            "color": "#93c47dff"
                         }
                     },
                     {
                         "featureType": "railway",
                         "elementType": "all",
                         "stylers": {
-                            "visibility": "off"
+                            "visibility": "on"
+                        }
+                    },
+                    {
+                        "featureType": "subway",
+                        "elementType": "all",
+                        "stylers": {
+                            "visibility": "on"
+                        }
+                    },
+                    {
+                        "featureType": "manmade",
+                        "elementType": "all",
+                        "stylers": {
+                            "color": "#eeeeeeff"
                         }
                     }
                 ]
