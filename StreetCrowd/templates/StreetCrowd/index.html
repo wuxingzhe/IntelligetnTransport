@@ -130,7 +130,7 @@
     function animloop() {
         if (counter == 0) {
             var carsData = selectData();
-            if(bmap.getZoom()>15)
+            /*if(bmap.getZoom()>15)
             {
                 myChart.setOption({
                     bmap: {
@@ -156,6 +156,7 @@
                 });
             }
             else{
+                */
                 myChart.setOption({
                     bmap: {
                         roam: true
@@ -168,7 +169,7 @@
                         seriesIndex: 0,
                         calculable: true,
                         inRange: {
-                            color: ['#32ff7e', '#fffa65', '#ffaf40', '#ff4d4d']
+                            color: ['#1E90FF','#228B22', '#FFFF00', '#FF8C00', '#FF0000']
                         }
                     },
                     series: [{
@@ -177,13 +178,14 @@
                         data: carsData,
                         minAlpha: 0.1,
                         maxOpacity: 1.0,
-                        pointSize: 14,
-                        blurSize: 15
+                        minOpacity:0.4,
+                        pointSize: 11,
+                        blurSize: 10
                     }]
 
 
                 });
-            }
+           // }
 
             counter++;
         }
