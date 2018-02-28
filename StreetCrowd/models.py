@@ -7,9 +7,7 @@ class CarStatus(models.Model):
     car_id=models.IntegerField()
     longitude = models.FloatField()
     latitude=models.FloatField()
-    speed=models.IntegerField(default=0)
-    direction=models.IntegerField(default=0)
-    time=models.TimeField()
+    speed=models.FloatIntegerField(default=0.0)
     timeID=models.IntegerField(default=0)
     timeID.db_index=True
 
