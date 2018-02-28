@@ -5,34 +5,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能交通系统</title>
+{#    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>#}
+    <script src="../../static/StreetCrowd/js/jquery-3.3.1.min.js"></script>
     <script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
-    <script src="../../static/StreetCrowd/echarts/echarts.js"></script>
-    <script src="../../static/StreetCrowd/js/bmap.js"></script>
+    <script src="../../static/StreetCrowd/echarts/echarts.min.js"></script>
+    <script src="http://echarts.baidu.com/resource/echarts-gl-latest/dist/echarts-gl.min.js"></script>
+{#    <script src="../../static/StreetCrowd/js/bmap.js"></script>#}
     <script src="../../static/StreetCrowd/js/my.js"></script>
-    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="../../static/StreetCrowd/js/bootstrap.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/default.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/component.css"/><script src='https://api.mapbox.com/mapbox-gl-js/v0.40.0/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v0.40.0/mapbox-gl.css' rel='stylesheet'/>
+    <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/component.css"/>
+    <link rel='stylesheet' href='../../static/StreetCrowd/css/bootstrap.css' />
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body style="width:100%;height:100%;margin:0;">
 
-<div id="main" style="width:100%;height:100%;float:right;margin:0;font-family:"微软雅黑";font-size:36px;" title="智能交通系统">
+<div id="main" style="width:100%;height:100%;float:right;margin:0;font-size:36px;" title="智能交通系统">
 </div>
 
 
 <script type="text/javascript">
     mapboxgl.accessToken ='pk.eyJ1IjoiY2l0eXdhbmRlciIsImEiOiJjamE4ODM2YjQwNDB5MzNwY2hvanV2eDhiIn0.QCJ3-UnEddwCuxg8uvhLcQ';
-
+{#    var map = new mapboxgl.Map({#}
+{#        container: 'main',#}
+{#        style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r'#}
+{#    });#}
     var myChart = echarts.init(document.getElementById('main'));
     myChart.setOption({
         mapbox: {
             center: [116.402030, 39.937034],
             zoom: 13.7,
-            roam: true,
-
-            style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r',
+            style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r'
         },
         /*visualMap: {	// 视觉映射组件
             type: 'continuous',
