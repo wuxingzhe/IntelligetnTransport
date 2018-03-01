@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import CarStatus
 import json
@@ -10,8 +10,7 @@ from StreetCrowd.utils import handle_upload_file, handleFileThread
 def index(request):
     cars_list=[]
     time_id=[]
-    car_id=[]
-    cars=CarStatus.objects.all().order_by("timeID")
+    cars=CarStatus.objects.all().order_by("timeID","car_id")
     for p in cars:
         tmp=[]
         tmp.append(p.longitude)
@@ -34,12 +33,10 @@ def upload_data(request):
     :param request:请求
     :return:
     """
-    cars_list = []
     if request.method == "POST":
         files = request.FILES.getlist('file')
         filepath=handle_upload_file(files[0])
         file_thread = handleFileThread(1,filepath)
         file_thread.start()
         # return HttpResponse('Successful')  # 此处简单返回一个成功的消息，在实际应用中可以返回到指定的页面中
-    context = {'cars_list': cars_list}
-    return render(request, 'StreetCrowd/index.html', context)
+    return redirect('/StreetCrowd')
