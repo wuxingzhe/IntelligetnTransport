@@ -10,6 +10,7 @@ from StreetCrowd.utils import handle_upload_file, handleFileThread
 def index(request):
     cars_list=[]
     time_id=[]
+    car_id=[]
     cars=CarStatus.objects.all().order_by("timeID")
     for p in cars:
         tmp=[]
