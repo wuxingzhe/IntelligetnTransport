@@ -10,6 +10,7 @@ from StreetCrowd.utils import handle_upload_file, handleFileThread
 def index(request):
     cars_list=[]
     time_id=[]
+    car_id=[]
     cars=CarStatus.objects.all().order_by("timeID","car_id")
     for p in cars:
         tmp=[]
@@ -23,7 +24,8 @@ def index(request):
         tmp.append(num)
         cars_list.append(tmp)
         time_id.append(p.timeID)
-    context={'cars_list':json.dumps(cars_list) ,'time_id':json.dumps(time_id)}
+        car_id.append(p.car_id)
+    context={'cars_list':json.dumps(cars_list) ,'time_id':json.dumps(time_id),'car_id':json.dumps(car_id)}
     return render(request,'StreetCrowd/index.html',context)
 
 
