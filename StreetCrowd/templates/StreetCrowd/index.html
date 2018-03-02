@@ -10,6 +10,7 @@
     <script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
     <script src="../../static/StreetCrowd/echarts/echarts.min.js"></script>
     <script src="http://echarts.baidu.com/resource/echarts-gl-latest/dist/echarts-gl.min.js"></script>
+    <script src="../../static/StreetCrowd/js/EchartsLayer.js"></script>
     <script src="../../static/StreetCrowd/js/my.js"></script>
     <script src="../../static/StreetCrowd/js/bootstrap.min.js"></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
@@ -29,14 +30,17 @@
     mapboxgl.accessToken ='pk.eyJ1IjoiY2l0eXdhbmRlciIsImEiOiJjamE4ODM2YjQwNDB5MzNwY2hvanV2eDhiIn0.QCJ3-UnEddwCuxg8uvhLcQ';
     var map = new mapboxgl.Map({
         container: 'main',
-        style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r'
+        style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r',
+        center:[116.402030, 39.937034],
+        zoom:12
     });
-    var myChart = echarts.init(document.getElementById('main'));
-    myChart.setOption({
-        mapbox: {
-            center: [116.402030, 39.937034],
-            zoom: 13.7,
-            style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r'
+    map.addControl(new mapboxgl.AttributionControl({
+        compact: true
+    }));
+    var myChart = new EchartsLayer(map);
+    myChart.chart.setOption({
+        GLMap: {
+            roam:true
         },
         /*visualMap: {	// 视觉映射组件
             type: 'continuous',
@@ -49,7 +53,7 @@
         },*/
         series: [{
             type: 'scatter',
-            coordinateSystem: 'mapbox',
+            coordinateSystem: 'GLMap',
             data: []
         }]
 
@@ -117,8 +121,8 @@
             }
             else{
                 */
-                myChart.setOption({
-                    mapbox: {
+                myChart.chart.setOption({
+                    GLMap: {
                         roam: true
                     },
                     visualMap: {	// 视觉映射组件
@@ -134,7 +138,7 @@
                     },
                     series: [{
                         type: 'heatmap',
-                        coordinateSystem: 'mapbox',
+                        coordinateSystem: 'GLMap',
                         data: carsData,
                         minAlpha: 0.1,
                         maxOpacity: 1.0,
