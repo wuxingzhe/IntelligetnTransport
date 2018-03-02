@@ -10,7 +10,7 @@
     <script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
     <script src="../../static/StreetCrowd/echarts/echarts.min.js"></script>
     <script src="../../static/StreetCrowd/js/EchartsLayer.js"></script>
-    <script src="../../static/StreetCrowd/js/echarts-all-3.js"></script>
+{#    <script src="../../static/StreetCrowd/echarts/echarts.js"></script>#}
     <script src="http://echarts.baidu.com/resource/echarts-gl-latest/dist/echarts-gl.min.js"></script>
     <script src="../../static/StreetCrowd/js/my.js"></script>
     <script src="../../static/StreetCrowd/js/bootstrap.min.js"></script>
@@ -32,15 +32,14 @@
     mapboxgl.accessToken ='pk.eyJ1IjoiY2l0eXdhbmRlciIsImEiOiJjamE4ODM2YjQwNDB5MzNwY2hvanV2eDhiIn0.QCJ3-UnEddwCuxg8uvhLcQ';
     var map = new mapboxgl.Map({
         container: 'main',
-        style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r'
+        style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r',
+        center: [116.402030, 39.937034],
+        zoom: 13.7
     });
 
     var myChart=new EchartsLayer(map);
     myChart.chart.setOption(option = {
         GLMap: {
-            center: [116.402030, 39.937034],
-            zoom: 13.7,
-            style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r'
         },
         /*visualMap: {	// 视觉映射组件
             type: 'continuous',
