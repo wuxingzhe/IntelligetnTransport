@@ -34,9 +34,6 @@
         center:[116.402030, 39.937034],
         zoom:12
     });
-    map.addControl(new mapboxgl.AttributionControl({
-        compact: true
-    }));
     var myChart = new EchartsLayer(map);
     myChart.chart.setOption({
         GLMap: {
