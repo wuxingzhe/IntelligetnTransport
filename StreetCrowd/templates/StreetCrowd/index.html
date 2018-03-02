@@ -9,12 +9,14 @@
     <script src="../../static/StreetCrowd/js/jquery-3.3.1.min.js"></script>
     <script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
     <script src="../../static/StreetCrowd/echarts/echarts.min.js"></script>
-    <script src="http://echarts.baidu.com/resource/echarts-gl-latest/dist/echarts-gl.min.js"></script>
     <script src="../../static/StreetCrowd/js/EchartsLayer.js"></script>
+    <script src="../../static/StreetCrowd/js/echarts-all-3.js"></script>
+    <script src="http://echarts.baidu.com/resource/echarts-gl-latest/dist/echarts-gl.min.js"></script>
     <script src="../../static/StreetCrowd/js/my.js"></script>
     <script src="../../static/StreetCrowd/js/bootstrap.min.js"></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/default.css"/>
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/component.css"/>
     <link rel='stylesheet' href='../../static/StreetCrowd/css/bootstrap.css' />
@@ -30,14 +32,15 @@
     mapboxgl.accessToken ='pk.eyJ1IjoiY2l0eXdhbmRlciIsImEiOiJjamE4ODM2YjQwNDB5MzNwY2hvanV2eDhiIn0.QCJ3-UnEddwCuxg8uvhLcQ';
     var map = new mapboxgl.Map({
         container: 'main',
-        style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r',
-        center:[116.402030, 39.937034],
-        zoom:12
+        style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r'
     });
-    var myChart = new EchartsLayer(map);
-    myChart.chart.setOption({
+
+    var myChart=new EchartsLayer(map);
+    myChart.chart.setOption(option = {
         GLMap: {
-            roam:true
+            center: [116.402030, 39.937034],
+            zoom: 13.7,
+            style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r'
         },
         /*visualMap: {	// 视觉映射组件
             type: 'continuous',
@@ -63,6 +66,16 @@
     var cars_list ={{cars_list|safe}};
     var length = cars_list.length;
     var time_id ={{time_id|safe}};
+    var car_id={{car_id|safe}};
+
+    var dataL=[];//这一时刻的数据
+    var dataR=[];//下一时刻的数据
+    var dataMid=[];//二个时刻中间的过渡数据
+    var addition=[];//过渡增量
+
+    var spTmp=[];
+    var loTmp=[];
+    var laTmp=[];
 
     //animation
     window.requestAnimFrame = (function () {
@@ -90,7 +103,7 @@
 
     function animloop() {
         if (counter == 0) {
-            var carsData = selectData();
+            selectData();
             /*if(bmap.getZoom()>15)
             {
                 myChart.setOption({
@@ -118,7 +131,7 @@
             }
             else{
                 */
-                myChart.chart.setOption({
+                myChart.chart.setOption(option = {
                     GLMap: {
                         roam: true
                     },
@@ -136,7 +149,7 @@
                     series: [{
                         type: 'heatmap',
                         coordinateSystem: 'GLMap',
-                        data: carsData,
+                        data: dataL,
                         minAlpha: 0.1,
                         maxOpacity: 1.0,
                         minOpacity:0.4,
@@ -152,7 +165,45 @@
         }
         else
         {
-            if(counter==29)
+            if(id<=535)
+            {
+                for(var i=0;i<dataMid.length;i++)
+                {
+                    for(var j=0;j<3;j++)
+                        dataMid[i][j]+=addition[i][j];
+                }
+            }
+
+            myChart.chart.setOption(option = {
+                GLMap: {
+                    roam: true
+                },
+                visualMap: {	// 视觉映射组件
+                    type: 'continuous',
+                    min: 0,
+                    max: 300,
+                    splitNumber: 5,
+                    seriesIndex: 0,
+                    calculable: true,
+                    inRange: {
+                        color: ['#1E90FF','#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+                    }
+                },
+                series: [{
+                    type: 'heatmap',
+                    coordinateSystem: 'GLMap',
+                    data: dataMid,
+                    minAlpha: 0.1,
+                    maxOpacity: 1.0,
+                    minOpacity:0.4,
+                    pointSize: 11,
+                    blurSize: 10
+                }]
+
+
+            });
+
+            if(counter==59)
                 counter=0;
             else
                 counter += 1;
@@ -162,33 +213,72 @@
     }
 
     function selectData() {
-        var res = [];
-        for (var i = lineId; i < length; i++) {
-            if (i == length - 1) {
-                lineId = 0;
-                id = 1;
-                break;
-            }
+        if(id==536)
+            id=1;
+        dataL.splice(0,dataL.length);
+        dataMid.splice(0,dataMid.length);
+        dataR.splice(0,dataR.length);
+        addition.splice(0,addition.length);
+        var flag=[];
+        for(var i=0;i<=1400;i++)
+            flag.push(0);
 
-            if (time_id[i] != id) {
+        for (var i = lineId; i < length; i++) {
+
+            if (time_id[i]-id>1) {
                 id++;
                 break;
             }
-            res.push(cars_list[i]);
-            if(cars_list[i][2]<40)
+            else if(time_id[i]-id==1)
+            {
+                if(flag[car_id[i]]==1){
+                    var t1=(cars_list[i][0]-laTmp[car_id[i]])/60;
+                    var t2=(cars_list[i][1]-loTmp[car_id[i]])/60;
+                    var t3=(cars_list[i][2]-spTmp[car_id[i]])/60;
+
+                    addition.push(new Array(t1,t2,t3));
+                    dataMid.push(new Array(laTmp[car_id[i]]+t1,loTmp[car_id[i]]+t2,spTmp[car_id[i]]+t3));
+                }
+            }
+            else
+            {
+                flag[car_id[i]]=1;
+                spTmp[car_id[i]]=cars_list[i][2];
+                dataL.push(cars_list[i]);
+                laTmp[car_id[i]]=cars_list[i][0];
+                loTmp[car_id[i]]=cars_list[i][1];
+                lineId++;
+            }
+
+            /*if(cars_list[i][2]<40)
             {
                 res.push(new Array(cars_list[i][0]-0.001,cars_list[i][1],cars_list[i][2]));
                 res.push(new Array(cars_list[i][0]+0.001,cars_list[i][1],cars_list[i][2]));
                 res.push(new Array(cars_list[i][0],cars_list[i][1]-0.001,cars_list[i][2]));
                 res.push(new Array(cars_list[i][0],cars_list[i][1]+0.001,cars_list[i][2]));
+            }*/
+            if (i == length - 1&&lineId==length) {
+                lineId = 0;
+                id = 536;
             }
-            lineId++;
         }
 
-        return res;
+        if(id==536){
+            for(var i=0;i<dataL.length;i++)
+            {
+                dataMid.push(dataL[i]);
+            }
+        }
+
     }
 
     function loadAnimaton() {
+        for(var i=0;i<=1400;i++)
+        {
+            spTmp.push(0.0);
+            laTmp.push(0.0);
+            loTmp.push(0.0);
+        }
         requestAnimFrame(animloop);
     }
 
