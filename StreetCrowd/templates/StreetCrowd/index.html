@@ -125,17 +125,17 @@
             };
     })();
 
-    /*var ecModel = myChart._model;
-    var bmap = null;
-    ecModel.eachComponent('bmap', function (bmapModel) {
-        if(bmap == null){
-            bmap = bmapModel.__bmap;
-        }
-    });
+{#    var ecModel = myChart._model;#}
+{#    var bmap = null;#}
+{#    ecModel.eachComponent('bmap', function (bmapModel) {#}
+{#        if(bmap == null){#}
+{#            bmap = bmapModel.__bmap;#}
+{#        }#}
+{#    });#}
 
-    bmap.addEventListener("mousemove", function(e){
-        document.getElementById("main").title=e.point.lng + ", " + e.point.lat;
-    });*/
+    map.on('mousemove', function (e) {
+        document.getElementById("main").title=JSON.stringify(e.lngLat);
+    });
 
     function animloop() {
         if (counter == 0) {
