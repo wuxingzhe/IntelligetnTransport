@@ -45,20 +45,40 @@
     myChart.chart.setOption(option = {
         GLMap: {
         },
-        /*visualMap: {	// 视觉映射组件
+        visualMap: {	// 视觉映射组件
             type: 'continuous',
             min: 0,
-            max: 100,
+            max: 300,
             calculable: true,
             inRange: {
                 color: ['#50a3ba', '#eac736', '#d94e5d']
             },
-        },*/
-        series: [{
-            type: 'scatter',
+        },
+        series: [ {
+            name: 'Top5',
+            type: 'map',
             coordinateSystem: 'GLMap',
-            data: []
-        }]
+            data:[],
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    return 10 + v/100
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false}
+                    }
+                },
+                data : [
+                    [116.43790643999972,39.94022588198814,250],
+                    [116.34735333333333,39.880183333333335,250],
+                    [116.45065111111106,39.89267888888887,250],
+                ]
+            }}]
 
 
     });
@@ -156,8 +176,8 @@
                         minAlpha: 0.1,
                         maxOpacity: 1.0,
                         minOpacity:0.4,
-                        pointSize: 11,
-                        blurSize: 10
+                        pointSize: 10,
+                        blurSize: 8
                     }]
 
 
@@ -206,7 +226,7 @@
 
             });
 
-            if(counter==59)
+            if(counter==29)
                 counter=0;
             else
                 counter += 1;
@@ -235,9 +255,9 @@
             else if(time_id[i]-id==1)
             {
                 if(flag[car_id[i]]==1){
-                    var t1=(cars_list[i][0]-laTmp[car_id[i]])/60;
-                    var t2=(cars_list[i][1]-loTmp[car_id[i]])/60;
-                    var t3=(cars_list[i][2]-spTmp[car_id[i]])/60;
+                    var t1=(cars_list[i][0]-laTmp[car_id[i]])/30;
+                    var t2=(cars_list[i][1]-loTmp[car_id[i]])/30;
+                    var t3=(cars_list[i][2]-spTmp[car_id[i]])/30;
 
                     addition.push(new Array(t1,t2,t3));
                     dataMid.push(new Array(laTmp[car_id[i]]+t1,loTmp[car_id[i]]+t2,spTmp[car_id[i]]+t3));
