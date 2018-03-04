@@ -125,14 +125,6 @@
             };
     })();
 
-{#    var ecModel = myChart._model;#}
-{#    var bmap = null;#}
-{#    ecModel.eachComponent('bmap', function (bmapModel) {#}
-{#        if(bmap == null){#}
-{#            bmap = bmapModel.__bmap;#}
-{#        }#}
-{#    });#}
-
     map.on('mousemove', function (e) {
         document.getElementById("main").title=JSON.stringify(e.lngLat);
     });
