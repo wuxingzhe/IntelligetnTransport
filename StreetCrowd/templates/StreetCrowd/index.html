@@ -18,11 +18,11 @@
 
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/default.css"/>
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/component.css"/>
-    <link rel='stylesheet' href='../../static/StreetCrowd/css/bootstrap.css' />
-    <link href='https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel='stylesheet' href='../../static/StreetCrowd/css/bootstrap.css'/>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet'/>
     <style type="text/css">
         .mapboxgl-ctrl-attrib {
-         font-size: 10px;
+            font-size: 10px;
         }
     </style>
 </head>
@@ -33,7 +33,7 @@
 
 
 <script type="text/javascript">
-    mapboxgl.accessToken ='pk.eyJ1IjoiY2l0eXdhbmRlciIsImEiOiJjamE4ODM2YjQwNDB5MzNwY2hvanV2eDhiIn0.QCJ3-UnEddwCuxg8uvhLcQ';
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY2l0eXdhbmRlciIsImEiOiJjamE4ODM2YjQwNDB5MzNwY2hvanV2eDhiIn0.QCJ3-UnEddwCuxg8uvhLcQ';
     var map = new mapboxgl.Map({
         container: 'main',
         style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r',
@@ -41,10 +41,9 @@
         zoom: 13.7
     });
 
-    var myChart=new EchartsLayer(map);
+    var myChart = new EchartsLayer(map);
     myChart.chart.setOption(option = {
-        GLMap: {
-        },
+        GLMap: {},
         visualMap: {	// 视觉映射组件
             type: 'continuous',
             min: 0,
@@ -52,33 +51,77 @@
             calculable: true,
             inRange: {
                 color: ['#50a3ba', '#eac736', '#d94e5d']
-            },
+            }
         },
-        series: [ {
+        series: [{
             name: 'Top5',
-            type: 'map',
+            type: 'effectScatter',
             coordinateSystem: 'GLMap',
-            data:[],
-            markPoint : {
-                symbol:'emptyCircle',
-                symbolSize : function (v){
-                    return 10 + v/100
+            symbolSize: 50,
+            rippleEffect: {
+                period: 5,
+                scale: 5,
+                brushType: 'stroke'
+            },
+            data: [
+                [116.43790643999972, 39.94022588198814, 250],
+                [116.34735333333333, 39.880183333333335, 250],
+                [116.45065111111106, 39.89267888888887, 250]
+            ],
+            markPoint: {
+                symbol: 'emptyCircle',
+                symbolSize: function (v) {
+                    return (10 + v / 100) * 100
                 },
-                effect : {
+                effect: {
                     show: true,
-                    shadowBlur : 0
+                    shadowBlur: 0
                 },
-                itemStyle:{
-                    normal:{
-                        label:{show:false}
+                itemStyle: {
+                    normal: {
+                        label: {show: false}
                     }
                 },
-                data : [
-                    [116.43790643999972,39.94022588198814,250],
-                    [116.34735333333333,39.880183333333335,250],
-                    [116.45065111111106,39.89267888888887,250],
+                data: [
+                    {name: 1, coord: [116.43790643999972, 39.94022588198814, 250]},
+                    {name: 2, coord: [116.34735333333333, 39.880183333333335, 250]},
+                    {name: 3, coord: [116.45065111111106, 39.89267888888887, 250]}
                 ]
-            }}]
+            }
+        },
+            {
+                type: 'lines',
+                coordinateSystem: 'GLMap',
+                data: [{
+                    coords: [
+                        [116.43790643999972, 39.94022588198814],  // 起点
+                        [116.34735333333333, 39.880183333333335]   // 终点
+                                     // 如果 polyline 为 true 还可以设置更多的点
+                    ]
+                    // 统一的样式设置
+
+                }],
+                effect: {
+                    show: true,
+                    constantSpeed: 100,
+                    trailWidth: 2,
+                    trailLength: 0.8,
+                    trailOpacity: 1,
+                    spotIntensity: 10
+                },
+
+                blendMode: 'lighter',
+
+                polyline: true,
+
+                lineStyle: {
+                    width: 0.1,
+                    color: 'rgb(200, 40, 0)',
+                    opacity: 0.
+                },
+                zlevel: 1
+            }
+        ]
 
 
     });
@@ -89,16 +132,16 @@
     var cars_list ={{cars_list|safe}};
     var length = cars_list.length;
     var time_id ={{time_id|safe}};
-    var car_id={{car_id|safe}};
+    var car_id ={{car_id|safe}};
 
-    var dataL=[];//这一时刻的数据
-    var dataR=[];//下一时刻的数据
-    var dataMid=[];//二个时刻中间的过渡数据
-    var addition=[];//过渡增量
+    var dataL = [];//这一时刻的数据
+    var dataR = [];//下一时刻的数据
+    var dataMid = [];//二个时刻中间的过渡数据
+    var addition = [];//过渡增量
 
-    var spTmp=[];
-    var loTmp=[];
-    var laTmp=[];
+    var spTmp = [];
+    var loTmp = [];
+    var laTmp = [];
 
     //animation
     window.requestAnimFrame = (function () {
@@ -112,16 +155,9 @@
             };
     })();
 
-{#    var ecModel = myChart._model;#}
-{#    var bmap = null;#}
-{#    ecModel.eachComponent('bmap', function (bmapModel) {#}
-{#        if(bmap == null){#}
-{#            bmap = bmapModel.__bmap;#}
-{#        }#}
-{#    });#}
 
     map.on('mousemove', function (e) {
-        document.getElementById("main").title=JSON.stringify(e.lngLat);
+        document.getElementById("main").title = JSON.stringify(e.lngLat);
     });
 
     function animloop() {
@@ -154,46 +190,43 @@
             }
             else{
                 */
-                myChart.chart.setOption(option = {
-                    GLMap: {
-                        roam: true
-                    },
-                    visualMap: {	// 视觉映射组件
-                        type: 'continuous',
-                        min: 0,
-                        max: 300,
-                        splitNumber: 5,
-                        seriesIndex: 0,
-                        calculable: true,
-                        inRange: {
-                            color: ['#1E90FF','#228B22', '#FFFF00', '#FF8C00', '#FF0000']
-                        }
-                    },
-                    series: [{
-                        type: 'heatmap',
-                        coordinateSystem: 'GLMap',
-                        data: dataL,
-                        minAlpha: 0.1,
-                        maxOpacity: 1.0,
-                        minOpacity:0.4,
-                        pointSize: 10,
-                        blurSize: 8
-                    }]
+            myChart.chart.setOption(option = {
+                GLMap: {
+                    roam: true
+                },
+                visualMap: {	// 视觉映射组件
+                    type: 'continuous',
+                    min: 0,
+                    max: 300,
+                    splitNumber: 5,
+                    seriesIndex: 0,
+                    calculable: true,
+                    inRange: {
+                        color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+                    }
+                },
+                series: [{
+                    type: 'heatmap',
+                    coordinateSystem: 'GLMap',
+                    data: dataL,
+                    minAlpha: 0.1,
+                    maxOpacity: 1.0,
+                    minOpacity: 0.4,
+                    pointSize: 10,
+                    blurSize: 8
+                }]
 
 
-                });
-           // }
+            });
+            // }
 
             counter++;
         }
-        else
-        {
-            if(id<=535)
-            {
-                for(var i=0;i<dataMid.length;i++)
-                {
-                    for(var j=0;j<3;j++)
-                        dataMid[i][j]+=addition[i][j];
+        else {
+            if (id <= 535) {
+                for (var i = 0; i < dataMid.length; i++) {
+                    for (var j = 0; j < 3; j++)
+                        dataMid[i][j] += addition[i][j];
                 }
             }
 
@@ -209,7 +242,7 @@
                     seriesIndex: 0,
                     calculable: true,
                     inRange: {
-                        color: ['#1E90FF','#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+                        color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
                     }
                 },
                 series: [{
@@ -218,7 +251,7 @@
                     data: dataMid,
                     minAlpha: 0.1,
                     maxOpacity: 1.0,
-                    minOpacity:0.4,
+                    minOpacity: 0.4,
                     pointSize: 11,
                     blurSize: 10
                 }]
@@ -226,8 +259,8 @@
 
             });
 
-            if(counter==29)
-                counter=0;
+            if (counter == 29)
+                counter = 0;
             else
                 counter += 1;
         }
@@ -236,40 +269,38 @@
     }
 
     function selectData() {
-        if(id==536)
-            id=1;
-        dataL.splice(0,dataL.length);
-        dataMid.splice(0,dataMid.length);
-        dataR.splice(0,dataR.length);
-        addition.splice(0,addition.length);
-        var flag=[];
-        for(var i=0;i<=1400;i++)
+        if (id == 536)
+            id = 1;
+        dataL.splice(0, dataL.length);
+        dataMid.splice(0, dataMid.length);
+        dataR.splice(0, dataR.length);
+        addition.splice(0, addition.length);
+        var flag = [];
+        for (var i = 0; i <= 1400; i++)
             flag.push(0);
 
         for (var i = lineId; i < length; i++) {
 
-            if (time_id[i]-id>1) {
+            if (time_id[i] - id > 1) {
                 id++;
                 break;
             }
-            else if(time_id[i]-id==1)
-            {
-                if(flag[car_id[i]]==1){
-                    var t1=(cars_list[i][0]-laTmp[car_id[i]])/30;
-                    var t2=(cars_list[i][1]-loTmp[car_id[i]])/30;
-                    var t3=(cars_list[i][2]-spTmp[car_id[i]])/30;
+            else if (time_id[i] - id == 1) {
+                if (flag[car_id[i]] == 1) {
+                    var t1 = (cars_list[i][0] - laTmp[car_id[i]]) / 30;
+                    var t2 = (cars_list[i][1] - loTmp[car_id[i]]) / 30;
+                    var t3 = (cars_list[i][2] - spTmp[car_id[i]]) / 30;
 
-                    addition.push(new Array(t1,t2,t3));
-                    dataMid.push(new Array(laTmp[car_id[i]]+t1,loTmp[car_id[i]]+t2,spTmp[car_id[i]]+t3));
+                    addition.push(new Array(t1, t2, t3));
+                    dataMid.push(new Array(laTmp[car_id[i]] + t1, loTmp[car_id[i]] + t2, spTmp[car_id[i]] + t3));
                 }
             }
-            else
-            {
-                flag[car_id[i]]=1;
-                spTmp[car_id[i]]=cars_list[i][2];
+            else {
+                flag[car_id[i]] = 1;
+                spTmp[car_id[i]] = cars_list[i][2];
                 dataL.push(cars_list[i]);
-                laTmp[car_id[i]]=cars_list[i][0];
-                loTmp[car_id[i]]=cars_list[i][1];
+                laTmp[car_id[i]] = cars_list[i][0];
+                loTmp[car_id[i]] = cars_list[i][1];
                 lineId++;
             }
 
@@ -280,15 +311,14 @@
                 res.push(new Array(cars_list[i][0],cars_list[i][1]-0.001,cars_list[i][2]));
                 res.push(new Array(cars_list[i][0],cars_list[i][1]+0.001,cars_list[i][2]));
             }*/
-            if (i == length - 1&&lineId==length) {
+            if (i == length - 1 && lineId == length) {
                 lineId = 0;
                 id = 536;
             }
         }
 
-        if(id==536){
-            for(var i=0;i<dataL.length;i++)
-            {
+        if (id == 536) {
+            for (var i = 0; i < dataL.length; i++) {
                 dataMid.push(dataL[i]);
             }
         }
@@ -296,8 +326,7 @@
     }
 
     function loadAnimaton() {
-        for(var i=0;i<=1400;i++)
-        {
+        for (var i = 0; i <= 1400; i++) {
             spTmp.push(0.0);
             laTmp.push(0.0);
             loTmp.push(0.0);
