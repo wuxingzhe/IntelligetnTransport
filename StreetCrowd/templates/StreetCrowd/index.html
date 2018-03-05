@@ -50,23 +50,23 @@
             max: 300,
             calculable: true,
             inRange: {
-                color: ['#50a3ba', '#eac736', '#d94e5d']
+                color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
             }
         },
         series: [{
             name: 'Top5',
             type: 'effectScatter',
             coordinateSystem: 'GLMap',
-            symbolSize: 50,
+            symbolSize: 30,
             rippleEffect: {
                 period: 5,
                 scale: 5,
                 brushType: 'stroke'
             },
             data: [
-                [116.43790643999972, 39.94022588198814, 250],
-                [116.34735333333333, 39.880183333333335, 250],
-                [116.45065111111106, 39.89267888888887, 250]
+                [116.43790643999972, 39.94022588198814, 280],
+                [116.34735333333333, 39.880183333333335, 220],
+                [116.45065111111106, 39.89267888888887, 220]
             ],
             markPoint: {
                 symbol: 'emptyCircle',
@@ -83,9 +83,9 @@
                     }
                 },
                 data: [
-                    {name: 1, coord: [116.43790643999972, 39.94022588198814, 250]},
-                    {name: 2, coord: [116.34735333333333, 39.880183333333335, 250]},
-                    {name: 3, coord: [116.45065111111106, 39.89267888888887, 250]}
+                    {name: 1, coord: [116.43790643999972, 39.94022588198814, 280]},
+                    {name: 2, coord: [116.34735333333333, 39.880183333333335, 220]},
+                    {name: 3, coord: [116.45065111111106, 39.89267888888887, 220]}
                 ]
             }
         },
@@ -96,7 +96,9 @@
                     coords: [
                         [116.43790643999972, 39.94022588198814],  // 起点
                         [116.34735333333333, 39.880183333333335]   // 终点
-                                     // 如果 polyline 为 true 还可以设置更多的点
+                                     //
+                        //
+                        // 如果 polyline 为 true 还可以设置更多的点
                     ]
                     // 统一的样式设置
 
@@ -105,17 +107,18 @@
                     show: true,
                     constantSpeed: 100,
                     trailWidth: 2,
-                    trailLength: 0.8,
+                    trailLength: 1,
                     trailOpacity: 1,
-                    spotIntensity: 10
+                    spotIntensity: 10,
+                    loop:true,
                 },
 
                 blendMode: 'lighter',
 
-                polyline: true,
+                polyline: false,
 
                 lineStyle: {
-                    width: 0.1,
+                    width: 0.3,
                     color: 'rgb(200, 40, 0)',
                     opacity: 0.
                 },
