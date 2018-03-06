@@ -22,7 +22,7 @@ class handleFileThread(threading.Thread):
                     for line in file:
                         cnt+=1
                         line = line.split()
-                        if len(line):
+                        if len(line)>0:
                             CarStatus.objects.create(car_id=int(line[0]), longitude=float(line[3]), latitude=float(line[4]),
                                                      speed=float(line[6]),timeID=int(line[-1]))
                         if(cnt%50==0):
