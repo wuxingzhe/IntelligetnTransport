@@ -214,9 +214,9 @@
                     data: dataL,
                     minAlpha: 0.1,
                     maxOpacity: 1.0,
-                    minOpacity: 0.4,
-                    pointSize: 10,
-                    blurSize: 8
+                    minOpacity: 0.5,
+                    pointSize: 9,
+                    blurSize: 7
                 }]
 
 
@@ -254,15 +254,15 @@
                     data: dataMid,
                     minAlpha: 0.1,
                     maxOpacity: 1.0,
-                    minOpacity: 0.4,
-                    pointSize: 11,
-                    blurSize: 10
+                    minOpacity: 0.5,
+                    pointSize: 9,
+                    blurSize: 7
                 }]
 
 
             });
 
-            if (counter == 29)
+            if (counter == 19)
                 counter = 0;
             else
                 counter += 1;
@@ -279,7 +279,7 @@
         dataR.splice(0, dataR.length);
         addition.splice(0, addition.length);
         var flag = [];
-        for (var i = 0; i <= 1400; i++)
+        for (var i = 0; i <= 2000; i++)
             flag.push(0);
 
         for (var i = lineId; i < length; i++) {
@@ -329,7 +329,7 @@
     }
 
     function loadAnimaton() {
-        for (var i = 0; i <= 1400; i++) {
+        for (var i = 0; i <= 2000; i++) {
             spTmp.push(0.0);
             laTmp.push(0.0);
             loTmp.push(0.0);
