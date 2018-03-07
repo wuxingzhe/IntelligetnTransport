@@ -96,6 +96,42 @@
                     coords: [
                         [116.43790643999972, 39.94022588198814],  // 起点
                         [116.34735333333333, 39.880183333333335]   // 终点
+                        //
+                        //
+                        // 如果 polyline 为 true 还可以设置更多的点
+                    ]
+                    // 统一的样式设置
+
+                }],
+                zlevel:1,
+                /*effect: {
+                    show: true,
+                    period: 2,
+                    trailLength: 0.7,
+                    color: 'yellow',
+                    symbolSize: 3,
+                    symbol:'circle',
+                },*/
+                lineStyle: {
+                    normal: {
+
+                        color: '#F80000',
+                        width: 2,
+                        curveness: 0.2
+                    }
+                },
+
+                blendMode: 'lighter',
+
+                polyline: false,
+            },
+            {
+                type: 'lines',
+                coordinateSystem: 'GLMap',
+                data: [{
+                    coords: [
+                        [116.43790643999972, 39.94022588198814],  // 起点
+                        [116.34735333333333, 39.880183333333335]   // 终点
                                      //
                         //
                         // 如果 polyline 为 true 还可以设置更多的点
@@ -105,12 +141,13 @@
                 }],
                 effect: {
                     show: true,
-                    constantSpeed: 100,
-                    trailWidth: 2,
-                    trailLength: 1,
+                    constantSpeed: 50,
+                    trailWidth: 4,
+                    trailLength: 0.4,
                     trailOpacity: 1,
                     spotIntensity: 10,
-                    loop:true,
+                    curveness: 0.2,
+                    period:2,
                 },
 
                 blendMode: 'lighter',
@@ -118,11 +155,12 @@
                 polyline: false,
 
                 lineStyle: {
-                    width: 0.3,
+                    width: 4,
                     color: 'rgb(200, 40, 0)',
-                    opacity: 0.
+                    opacity: 0.,
+                    curveness: 0.2,
                 },
-                zlevel: 1
+                zlevel: 2
             }
         ]
 
