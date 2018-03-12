@@ -31,6 +31,66 @@
 <div id="main" style="width:100%;height:100%;float:right;margin:0;font-size:36px;" title="智能交通系统">
 </div>
 
+<div class="side">
+    <nav class="dr-menu">
+        <div class="dr-trigger" style="color:#91cfa1;position:absolute;top:0px;left:0px;"><span
+                class="dr-icon dr-icon-menu"></span></div>
+        <ul>
+            <li>
+                <button type="button" class="btn btn-primary dr-icon dr-icon-download" data-toggle="modal"
+                        data-target="#DataLoadModal" style="background-color:#91cfa1;">系统输入接口
+                </button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-primary dr-icon dr-icon-camera"
+                        onclick="loadAnimaton()" style="background-color:#91cfa1;">
+                    启动智能系统
+                </button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-primary dr-icon dr-icon-bullhorn"
+                        onclick="startAnimation()" style="background-color:#91cfa1;">运行智能系统
+                </button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-primary dr-icon dr-icon-switch"
+                        onclick="stopAnimation()" style="background-color:#91cfa1;">停止智能系统
+                </button>
+            </li>
+            <li><a class="dr-icon dr-icon-download" href="#" style="background-color:#91cfa1;" id="timer">WXZHQ</a></li>
+            <li><a class="dr-icon dr-icon-settings" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
+            <li><a class="dr-icon dr-icon-switch" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
+        </ul>
+    </nav>
+</div>
+
+
+<!--Data Load Modal -->
+<div class="modal fade" id="DataLoadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">上传数据</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/StreetCrowd/upload/" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <input type="file" class="file-input" name="file" id="fileUpload">
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" id="import" value="确认"/>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
 
 <script type="text/javascript">
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2l0eXdhbmRlciIsImEiOiJjamE4ODM2YjQwNDB5MzNwY2hvanV2eDhiIn0.QCJ3-UnEddwCuxg8uvhLcQ';
@@ -40,6 +100,7 @@
         center: [116.38959387, 39.91531341],
         zoom: 11
     });
+
 
     var myChart = new EchartsLayer(map);
     myChart.chart.setOption(option = {
@@ -105,13 +166,13 @@
                 }],
                 zlevel:1,
                 /*effect: {
-                    show: true,
-                    period: 2,
-                    trailLength: 0.7,
-                    color: 'yellow',
-                    symbolSize: 3,
-                    symbol:'circle',
-                },*/
+                 show: true,
+                 period: 2,
+                 trailLength: 0.7,
+                 color: 'yellow',
+                 symbolSize: 3,
+                 symbol:'circle',
+                 },*/
                 lineStyle: {
                     normal: {
 
@@ -132,7 +193,7 @@
                     coords: [
                         [116.43790643999972, 39.94022588198814],  // 起点
                         [116.34735333333333, 39.880183333333335]   // 终点
-                                     //
+                        //
                         //
                         // 如果 polyline 为 true 还可以设置更多的点
                     ]
@@ -184,6 +245,9 @@
     var loTmp = [];
     var laTmp = [];
 
+    var myReg;//requestAnimationFrame返回值
+    var isStart;//是否暂停动画
+
     //animation
     window.requestAnimFrame = (function () {
         return window.requestAnimationFrame ||
@@ -196,6 +260,9 @@
             };
     })();
 
+    window.cancelAnimFrame =(function(){
+        return window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+    })();
 
     map.on('mousemove', function (e) {
         document.getElementById("main").title = JSON.stringify(e.lngLat);
@@ -205,32 +272,32 @@
         if (counter == 0) {
             selectData();
             /*if(bmap.getZoom()>15)
-            {
-                myChart.setOption({
-                    bmap: {
-                        roam: true
-                    },
-                    visualMap: {	// 视觉映射组件
-                        type: 'continuous',
-                        min: 0,
-                        max: 100,
-                        calculable: true,
-                        inRange: {
-                            color: ['#50a3ba', '#eac736', '#d94e5d']
-                        },
-                    },
-                    series: [{
-                        type: 'scatter',
-                        coordinateSystem: 'bmap',
-                        data: carsData,
-                        symbolSize: 4
-                    }]
+             {
+             myChart.setOption({
+             bmap: {
+             roam: true
+             },
+             visualMap: {	// 视觉映射组件
+             type: 'continuous',
+             min: 0,
+             max: 100,
+             calculable: true,
+             inRange: {
+             color: ['#50a3ba', '#eac736', '#d94e5d']
+             },
+             },
+             series: [{
+             type: 'scatter',
+             coordinateSystem: 'bmap',
+             data: carsData,
+             symbolSize: 4
+             }]
 
 
-                });
-            }
-            else{
-                */
+             });
+             }
+             else{
+             */
             myChart.chart.setOption(option = {
                 GLMap: {
                     roam: true
@@ -306,7 +373,10 @@
                 counter += 1;
         }
 
-        requestAnimFrame(animloop);
+        if(isStart==1)
+            myReg = requestAnimFrame(animloop);
+
+        document.getElementById("timer").innerHTML=id;
     }
 
     function selectData() {
@@ -346,12 +416,12 @@
             }
 
             /*if(cars_list[i][2]<40)
-            {
-                res.push(new Array(cars_list[i][0]-0.001,cars_list[i][1],cars_list[i][2]));
-                res.push(new Array(cars_list[i][0]+0.001,cars_list[i][1],cars_list[i][2]));
-                res.push(new Array(cars_list[i][0],cars_list[i][1]-0.001,cars_list[i][2]));
-                res.push(new Array(cars_list[i][0],cars_list[i][1]+0.001,cars_list[i][2]));
-            }*/
+             {
+             res.push(new Array(cars_list[i][0]-0.001,cars_list[i][1],cars_list[i][2]));
+             res.push(new Array(cars_list[i][0]+0.001,cars_list[i][1],cars_list[i][2]));
+             res.push(new Array(cars_list[i][0],cars_list[i][1]-0.001,cars_list[i][2]));
+             res.push(new Array(cars_list[i][0],cars_list[i][1]+0.001,cars_list[i][2]));
+             }*/
             if (i == length - 1 && lineId == length) {
                 lineId = 0;
                 id = 536;
@@ -367,74 +437,30 @@
     }
 
     function loadAnimaton() {
+        isStart=1;
         for (var i = 0; i <= 2000; i++) {
             spTmp.push(0.0);
             laTmp.push(0.0);
             loTmp.push(0.0);
         }
-        requestAnimFrame(animloop);
+        myReg=requestAnimFrame(animloop);
+    }
+
+    function startAnimation(){
+        isStart=1;
+        myReg=requestAnimFrame(animloop);
+    }
+
+    function stopAnimation(){
+        isStart=0;
+        //window.cancelAnimFrame(myReq);
     }
 
     /*function setBaiduMapZoom(){
-        bmap.setZoom(16);
-    }*/
+     bmap.setZoom(16);
+     }*/
 </script>
-<div class="side">
-    <nav class="dr-menu">
-        <div class="dr-trigger" style="color:#91cfa1;position:absolute;top:0px;left:0px;"><span
-                class="dr-icon dr-icon-menu"></span></div>
-        <ul>
-            <li>
-                <button type="button" class="btn btn-primary dr-icon-user" data-toggle="modal"
-                        data-target="#DataLoadModal" style="background-color:#91cfa1;">Upload Data
-                </button>
-            </li>
-            <li>
-                <button type="button" class="btn btn-primary dr-icon dr-icon-camera"
-                        onclick="loadAnimaton()" style="background-color:#91cfa1;">
-                    Start Animation
-                </button>
-            </li>
-            <li>
-                <button type="button" class="btn btn-primary dr-icon dr-icon-heart"
-                        style="background-color:#91cfa1;">WXZHQ
-                </button>
-            </li>
-            <li><a class="dr-icon dr-icon-bullhorn" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
-            <li><a class="dr-icon dr-icon-download" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
-            <li><a class="dr-icon dr-icon-settings" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
-            <li><a class="dr-icon dr-icon-switch" href="#" style="background-color:#91cfa1;">WXZHQ</a></li>
-        </ul>
-    </nav>
-</div>
 
-
-<!--Data Load Modal -->
-<div class="modal fade" id="DataLoadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">上传数据</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="/StreetCrowd/upload/" method="post" enctype="multipart/form-data" accept-charset="utf-8">
-                {% csrf_token %}
-                <div class="modal-body">
-
-                    <input type="file" class="file-input" name="file" id="fileUpload">
-
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary" id="import" value="确认"/>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-</div>
 <script src="../../static/StreetCrowd/js/ytmenu.js"></script>
 
 </body>
