@@ -13,3 +13,13 @@ class CarStatus(models.Model):
 
     def __str__(self):
         return str(self.car_id)+' '+str(self.longitude)+' '+str(self.latitude)+' '+str(self.speed)+' '+str(self.timeID)
+
+class PointsPrediction(models.Model):
+    longitude = models.FloatField()
+    latitude = models.FloatField()
+    virsual_val=models.IntegerField()
+    frame_id=models.IntegerField()
+    coord_id=models.IntegerField()
+
+    def _str_(self):
+        return str(longitude)+' '+str(latitude)+' '+str(virsual_val)
