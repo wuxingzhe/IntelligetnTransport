@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能交通系统</title>
-    <script src="../../static/StreetCrowd/js/jquery.min.js"></script>
-    <script src="../../static/StreetCrowd/js/jquery-3.3.1.min.js"></script>
+{#    <script src="../../static/StreetCrowd/js/jquery.min.js"></script>#}
+{#    <script src="../../static/StreetCrowd/js/jquery-3.3.1.min.js"></script>#}
+    <script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.js"></script>
     <script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
     <script src="../../static/StreetCrowd/echarts/echarts.min.js"></script>
     <script src="../../static/StreetCrowd/js/EchartsLayer.js"></script>
@@ -75,6 +76,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <form id = "upload"  action="/StreetCrowd/upload/" method="post" enctype="multipart/form-data" accept-charset="utf-8">
             <form action="/StreetCrowd/upload/" method="post" enctype="multipart/form-data" accept-charset="utf-8">
                 {% csrf_token %}
                 <div class="modal-body">
@@ -83,7 +85,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary" id="import" value="确认"/>
+                    <button class="btn btn-primary" id="import">确认</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                 </div>
             </form>
@@ -92,6 +94,32 @@
 
 </div>
 
+<script type="text/javascript">
+     $("#import").click(function () {
+        var formData = new FormData();
+        formData.append("file",$("#fileUpload")[0].files[0]);
+    $.ajax({
+            //几个参数需要注意一下
+                url: "/upload/" ,//url
+                type: 'POST',//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+{#                headers:{"X-CSRFToken":$.cookie('csrftoken')},#}
+                data: formData,
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+
+                    if (result.resultCode == 200) {
+                        alert("SUCCESS");
+                    }
+                    window.location.href = "/StreetCrowd";
+
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+    })
+</script>
 <script type="text/javascript">
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2l0eXdhbmRlciIsImEiOiJjamE4ODM2YjQwNDB5MzNwY2hvanV2eDhiIn0.QCJ3-UnEddwCuxg8uvhLcQ';
     var map = new mapboxgl.Map({
