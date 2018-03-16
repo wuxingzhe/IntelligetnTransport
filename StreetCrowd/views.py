@@ -1,6 +1,8 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+
 from .models import CarStatus, PointsPrediction
 import json
 # Create your views here.
@@ -11,7 +13,7 @@ def index(request):
     cars_list=[]
     time_id=[]
     car_id=[]
-    cars=CarStatus.objects.order_by("timeID","car_id").all()
+    cars=CarStatus.objects.order_by("timeID","car_id").all()[:100]
     points=PointsPrediction.objects.order_by("frame_id", "coord_id").all()
     print(len(points))
     points_list=[]
@@ -39,7 +41,7 @@ def index(request):
         tmp.append(p.latitude)
         tmp.append(p.virsual_val)
         points_list.append(tmp)
-
+    print(points_list)
     context={'cars_list':json.dumps(cars_list) ,'time_id':json.dumps(time_id),'car_id':json.dumps(car_id),'points_list':json.dumps(points_list),'frame_id':json.dumps(frame_id),'coord_id':json.dumps(coord_id)}
     # context ={}
     return render(request,'StreetCrowd/index.html',context)
@@ -58,8 +60,8 @@ def upload_data(request):
         filepath=handle_upload_file(files[0])
         file_thread = handleFileThread(1,filepath)
         file_thread.start()
-        file_thread.join()
+        # file_thread.join()
         # return HttpResponse('Successful')  # 此处简单返回一个成功的消息，在实际应用中可以返回到指定的页面中
-    # name_dict = {"resultCode":200}
-    # return JsonResponse(name_dict)
-    return redirect('/StreetCrowd')
+    name_dict = {"resultCode":200}
+    return JsonResponse(name_dict)
+    # return redirect('/StreetCrowd')
