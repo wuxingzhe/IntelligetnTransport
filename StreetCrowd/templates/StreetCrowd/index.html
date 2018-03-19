@@ -326,7 +326,7 @@
         {
             if(predictionStart==0)
             {
-                predictionIteral=1;
+                predictionIteral=0;
                 predictionStart=1;
                 coordPosition=0;
                 pointData.slice(0,pointData.length);
@@ -383,9 +383,11 @@
                 });
 
                 coordPosition = 1;
+                sleep(3);
+
             }
             else if (predictionIteral == 0) {
-                predictionIteral = 1;
+                predictionIteral = 0;
                 var pointTotal=points_list.length;
                 for(var i=pointId;i<pointTotal;i++){
                     if(frame_id[i]!=id){
@@ -438,13 +440,15 @@
 
                 });
                 coordPosition++;
+                sleep(3);
+               // setTimeout(animloop,3000);
             }
-            else if(predictionIteral==179){
+            /*else if(predictionIteral==179){
                 predictionIteral=0;
             }
             else {
                 predictionIteral++;
-            }
+            }*/
         }
         else if (counter == 0) {
             selectData();
