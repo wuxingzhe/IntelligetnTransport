@@ -320,7 +320,7 @@
                 coordPosition=0;
                 pointData.slice(0,pointData.length);
 
-                var pointTotal=pointData.length;
+                var pointTotal=points_list.length;
                 for(var i=pointId;i<pointTotal;i++){
                     if(frame_id[i]!=id){
                         predictionCount++;
@@ -331,7 +331,7 @@
                         break;
                     }
 
-                    pointData.append(points_list[i]);
+                    pointData.push(points_list[i]);
                     if(i==pointTotal-1){
                         pointId=0;
                         predictionCount++;
@@ -357,7 +357,7 @@
                         name: 'Top5',
                         type: 'effectScatter',
                         coordinateSystem: 'GLMap',
-                        symbolSize: 20,
+                        symbolSize: 15,
                         rippleEffect: {
                             period: 5,
                             scale: 5,
@@ -376,7 +376,7 @@
             else if(predictionIteral==0){
                 predictionIteral=1;
 
-                var pointTotal=pointData.length;
+                var pointTotal=points_list.length;
                 for(var i=pointId;i<pointTotal;i++){
                     if(frame_id[i]!=id){
                         predictionCount++;
@@ -387,7 +387,7 @@
                         break;
                     }
 
-                    pointData.append(points_list[i]);
+                    pointData.push(points_list[i]);
                     if(i==pointTotal-1){
                         pointId=0;
                         predictionCount++;
@@ -413,7 +413,7 @@
                         name: 'Top5',
                         type: 'effectScatter',
                         coordinateSystem: 'GLMap',
-                        symbolSize: 20,
+                        symbolSize: 15,
                         rippleEffect: {
                             period: 5,
                             scale: 5,
@@ -428,8 +428,8 @@
                 });
                 coordPosition++;
             }
-            else if(predictionIteral==9){
-                predictionIteral=0
+            else if(predictionIteral==179){
+                predictionIteral=0;
             }
             else{
                 predictionIteral++;
@@ -547,7 +547,7 @@
         if(isStart==1)
             myReg = requestAnimFrame(animloop);
 
-        document.getElementById("timer").innerHTML=id;
+        document.getElementById("timer").innerHTML=points_list.length;
     }
 
     function selectData() {
