@@ -13,7 +13,7 @@ def index(request):
     cars_list=[]
     time_id=[]
     car_id=[]
-    cars=CarStatus.objects.order_by("timeID","car_id").all()[:100]
+    cars=CarStatus.objects.order_by("timeID","car_id").all()
     points=PointsPrediction.objects.order_by("frame_id", "coord_id").all()
     print(len(points))
     points_list=[]
