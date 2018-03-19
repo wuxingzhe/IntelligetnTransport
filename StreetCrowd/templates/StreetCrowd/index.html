@@ -383,8 +383,9 @@
                 });
 
                 coordPosition = 1;
-                sleep(3);
-
+                //this.sleep(3);
+                setTimeout(function(){requestAnimFrame(animloop)},3000);
+                return
             }
             else if (predictionIteral == 0) {
                 predictionIteral = 0;
@@ -440,7 +441,9 @@
 
                 });
                 coordPosition++;
-                sleep(3);
+                //this.sleep(3);
+                setTimeout(function(){requestAnimFrame(animloop)},3000);
+                return
                // setTimeout(animloop,3000);
             }
             /*else if(predictionIteral==179){
@@ -560,7 +563,10 @@
         }
 
         if (isStart == 1)
-            myReg = requestAnimFrame(animloop);
+{#            if(counter==0 && predictionCount<=23&& id==predictionTime[predictionCount] && predictionStatus==0){#}
+{#                myReg = this.setTimeout(requestAnimFrame(animloop),3000);#}
+{#            }#}
+             myReg = requestAnimFrame(animloop);
 
         document.getElementById("timer").innerHTML=points_list.length;
     }
