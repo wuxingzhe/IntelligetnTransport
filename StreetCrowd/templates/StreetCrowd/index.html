@@ -142,7 +142,7 @@
 
 
     var myChart = new EchartsLayer(map);
-    myChart.chart.setOption(option = {
+    /*myChart.chart.setOption(option = {
         GLMap: {},
         visualMap: {	// 视觉映射组件
             type: 'continuous',
@@ -168,7 +168,7 @@
                 [116.34735333333333, 39.880183333333335, 220],
                 [116.45065111111106, 39.89267888888887, 220]
             ],
-            /*markPoint: {
+            markPoint: {
                 symbol: 'emptyCircle',
                 symbolSize: function (v) {
                     return (10 + v / 100) * 100
@@ -187,7 +187,7 @@
                     {name: 2, coord: [116.34735333333333, 39.880183333333335, 220]},
                     {name: 3, coord: [116.45065111111106, 39.89267888888887, 220]}
                 ]
-            }*/
+            }
         },
             {
                 type: 'lines',
@@ -204,14 +204,14 @@
 
                 }],
                 zlevel: 1,
-                /*effect: {
+                effect: {
                  show: true,
                  period: 2,
                  trailLength: 0.7,
                  color: 'yellow',
                  symbolSize: 3,
                  symbol:'circle',
-                 },*/
+                 },
                 lineStyle: {
                     normal: {
 
@@ -265,7 +265,7 @@
         ]
 
 
-    });
+    });*/
 
     var id = 1;//timeID
     var counter = 0;//统计动画次数，以0为周期
@@ -329,7 +329,7 @@
                 predictionIteral=0;
                 predictionStart=1;
                 coordPosition=0;
-                pointData.slice(0,pointData.length);
+                pointData.splice(0,pointData.length);
 
                 var pointTotal=points_list.length;
                 for(var i=pointId;i<pointTotal;i++){
@@ -338,7 +338,7 @@
                         predictionStatus = 1;
                         break;
                     }
-                    else if (coord_id[i] != coordPosition) {
+                    else if (coord_id[i] != 0) {
                         break;
                     }
 
@@ -352,6 +352,8 @@
                     else
                         pointId++;
                 }
+
+                map.setZoom(12);
 
                 myChart.chart.setOption(option = {
                     GLMap: {},
@@ -375,6 +377,7 @@
                             brushType: 'stroke'
                         },
                         data: pointData,
+                        zlevel:2,
                     },
 
                     ]
@@ -400,7 +403,8 @@
                         break;
                     }
 
-                    pointData.push(points_list[i]);
+                    pointData.push(
+                        points_list[i]);
                     if(i==pointTotal-1){
                         pointId=0;
 
@@ -411,6 +415,8 @@
                     else
                         pointId++;
                 }
+
+                map.setZoom(12);
 
                 myChart.chart.setOption(option = {
                     GLMap: {},
@@ -434,6 +440,7 @@
                             brushType: 'stroke'
                         },
                         data: pointData,
+                        zlevel:2,
                     },
 
                     ]
@@ -484,6 +491,8 @@
              }
              else{
              */
+
+            map.setZoom(11);
             myChart.chart.setOption(option = {
                 GLMap: {
                     roam: true
@@ -507,8 +516,23 @@
                     maxOpacity: 1.0,
                     minOpacity: 0.5,
                     pointSize: 9,
-                    blurSize: 7
-                }]
+                    blurSize: 7,
+                    //zlevel:2
+                },
+                    {
+                        name: 'Top5',
+                        type: 'effectScatter',
+                        coordinateSystem: 'GLMap',
+                        symbolSize: 15,
+                        rippleEffect: {
+                            period: 5,
+                            scale: 5,
+                            brushType: 'stroke'
+                        },
+                        data: pointData,
+                        zlevel:2,
+                    },
+                    ]
 
 
             });
@@ -527,6 +551,7 @@
                 }
             }
 
+            map.setZoom(11);
             myChart.chart.setOption(option = {
                 GLMap: {
                     roam: true
@@ -550,8 +575,22 @@
                     maxOpacity: 1.0,
                     minOpacity: 0.5,
                     pointSize: 9,
-                    blurSize: 7
-                }]
+                    blurSize: 7,
+                    //zlevel:2,
+                },
+                    {
+                        name: 'Top5',
+                        type: 'effectScatter',
+                        coordinateSystem: 'GLMap',
+                        symbolSize: 15,
+                        rippleEffect: {
+                            period: 5,
+                            scale: 5,
+                            brushType: 'stroke'
+                        },
+                        data: pointData,
+                        zlevel:2,
+                    },]
 
 
             });

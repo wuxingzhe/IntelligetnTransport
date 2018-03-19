@@ -23,3 +23,14 @@ class PointsPrediction(models.Model):
 
     def _str_(self):
         return str(longitude)+' '+str(latitude)+' '+str(virsual_val)
+
+class LinesPrediction(models.Model):
+    start_longitude = models.FloatField()
+    start_latitude = models.FloatField()
+    end_longitude = models.FloatField()
+    end_latitude = models.FloatField()
+    frame_id = models.IntegerField()
+    coord_id = models.IntegerField()
+
+
+
