@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 
-from .models import CarStatus, PointsPrediction
+from .models import CarStatus, PointsPrediction, LinesPrediction
 import json
 # Create your views here.
 from StreetCrowd.utils import handle_upload_file, handleFileThread
@@ -15,8 +15,7 @@ def index(request):
     car_id=[]
     cars=CarStatus.objects.order_by("timeID","car_id").all()
     points=PointsPrediction.objects.order_by("frame_id", "coord_id").all()
-    lines=LinesPrediction.objects.all()
-
+    lines=LinesPrediction.objects.order_by("frame_id", "coord_id").all()
     print(len(points))
     points_list=[]
     frame_id=[]
@@ -71,7 +70,7 @@ def upload_data(request):
         filepath=handle_upload_file(files[0])
         file_thread = handleFileThread(1,filepath)
         file_thread.start()
-        # file_thread.join()
+        file_thread.join()
         # return HttpResponse('Successful')  # 此处简单返回一个成功的消息，在实际应用中可以返回到指定的页面中
     name_dict = {"resultCode":200}
     return JsonResponse(name_dict)
