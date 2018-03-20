@@ -361,8 +361,8 @@
                         pointId++;
                 }
 
-                var lineTotal=lines_list.length;
-                for(var i=lineId;i<lineTotal;i++){
+                /*var lineTotal=lines_list.length;
+                for(var i=linesId;i<lineTotal;i++){
                     if(lines_frame_id[i]!=id){
                         break;
                     }
@@ -372,12 +372,11 @@
 
                     linesData.push({coords:lines_list[i]});
                     if(i==lineTotal-1){
-                        lineId=0;
+                        linesId=0;
                     }
                     else
-                        lineId++;
-                }
-            }
+                        linesId++;
+                }*/
 
                 map.setZoom(12);
 
@@ -403,67 +402,14 @@
                             brushType: 'stroke'
                         },
                         data: pointData,
-                        zlevel:2,
                     },
-                        {
-                            type: 'lines',
-                            coordinateSystem: 'GLMap',
-                            data: linesData,
-                            zlevel:1,
-                            /*effect: {
-                             show: true,
-                             period: 2,
-                             trailLength: 0.7,
-                             color: 'yellow',
-                             symbolSize: 3,
-                             symbol:'circle',
-                             },*/
-                            lineStyle: {
-                                normal: {
-
-                                    color: '#F80000',
-                                    width: 2,
-                                    curveness: 0.2
-                                }
-                            },
-
-                            blendMode: 'lighter',
-
-                            polyline: false,
-                        },
-                        {
-                            type: 'lines',
-                            coordinateSystem: 'GLMap',
-                            data: linesData,
-                            effect: {
-                                show: true,
-                                constantSpeed: 50,
-                                trailWidth: 4,
-                                trailLength: 0.4,
-                                trailOpacity: 1,
-                                spotIntensity: 10,
-                                curveness: 0.2,
-                                period:2,
-                            },
-
-                            blendMode: 'lighter',
-
-                            polyline: false,
-
-                            lineStyle: {
-                                width: 4,
-                                color: 'rgb(200, 40, 0)',
-                                opacity: 0.,
-                                curveness: 0.2,
-                            },
-                            zlevel: 2
-                        }
                     ]
 
 
                 });
 
                 coordPosition = 1;
+                document.getElementById("timer").innerHTML=linesData.length;
                 //this.sleep(3);
                 setTimeout(function(){requestAnimFrame(animloop)},3000);
                 return
@@ -495,7 +441,7 @@
                 }
 
             var lineTotal=lines_list.length;
-            for(var i=lineId;i<lineTotal;i++){
+            for(var i=linesId;i<lineTotal;i++){
                 if(lines_frame_id[i]!=id){
                     break;
                 }
@@ -505,10 +451,10 @@
 
                 linesData.push({coords:lines_list[i]});
                 if(i==lineTotal-1){
-                    lineId=0;
+                    linesId=0;
                 }
                 else
-                    lineId++;
+                    linesId++;
             }
 
                 map.setZoom(12);
@@ -535,7 +481,6 @@
                             brushType: 'stroke'
                         },
                         data: pointData,
-                        zlevel:2,
                     },
                         {
                             type: 'lines',
@@ -594,6 +539,7 @@
 
 
                 });
+                document.getElementById("timer").innerHTML=linesData.length;
                 coordPosition++;
                 //this.sleep(3);
                 setTimeout(function(){requestAnimFrame(animloop)},3000);
@@ -666,6 +612,59 @@
                     blurSize: 7,
                     //zlevel:2
                 },
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'GLMap',
+                        data: [],
+                        zlevel:1,
+                        /*effect: {
+                         show: true,
+                         period: 2,
+                         trailLength: 0.7,
+                         color: 'yellow',
+                         symbolSize: 3,
+                         symbol:'circle',
+                         },*/
+                        lineStyle: {
+                            normal: {
+
+                                color: '#F80000',
+                                width: 2,
+                                curveness: 0.2
+                            }
+                        },
+
+                        blendMode: 'lighter',
+
+                        polyline: false,
+                    },
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'GLMap',
+                        data: [],
+                        effect: {
+                            show: true,
+                            constantSpeed: 50,
+                            trailWidth: 4,
+                            trailLength: 0.4,
+                            trailOpacity: 1,
+                            spotIntensity: 10,
+                            curveness: 0.2,
+                            period:2,
+                        },
+
+                        blendMode: 'lighter',
+
+                        polyline: false,
+
+                        lineStyle: {
+                            width: 4,
+                            color: 'rgb(200, 40, 0)',
+                            opacity: 0.,
+                            curveness: 0.2,
+                        },
+                        zlevel: 2
+                    }]}
                     );
             // }
 
@@ -708,7 +707,60 @@
                     pointSize: 9,
                     blurSize: 7,
                     //zlevel:2,
-                },]
+                },
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'GLMap',
+                        data: [],
+                        zlevel:1,
+                        /*effect: {
+                         show: true,
+                         period: 2,
+                         trailLength: 0.7,
+                         color: 'yellow',
+                         symbolSize: 3,
+                         symbol:'circle',
+                         },*/
+                        lineStyle: {
+                            normal: {
+
+                                color: '#F80000',
+                                width: 2,
+                                curveness: 0.2
+                            }
+                        },
+
+                        blendMode: 'lighter',
+
+                        polyline: false,
+                    },
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'GLMap',
+                        data: [],
+                        effect: {
+                            show: true,
+                            constantSpeed: 50,
+                            trailWidth: 4,
+                            trailLength: 0.4,
+                            trailOpacity: 1,
+                            spotIntensity: 10,
+                            curveness: 0.2,
+                            period:2,
+                        },
+
+                        blendMode: 'lighter',
+
+                        polyline: false,
+
+                        lineStyle: {
+                            width: 4,
+                            color: 'rgb(200, 40, 0)',
+                            opacity: 0.,
+                            curveness: 0.2,
+                        },
+                        zlevel: 2
+                    }]
 
 
             });
@@ -725,7 +777,7 @@
 {#            }#}
              myReg = requestAnimFrame(animloop);
 
-        document.getElementById("timer").innerHTML=points_list.length;
+        document.getElementById("timer").innerHTML=lines_list.length;
     }
 
     function selectData() {
