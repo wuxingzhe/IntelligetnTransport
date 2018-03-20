@@ -15,6 +15,8 @@ def index(request):
     car_id=[]
     cars=CarStatus.objects.order_by("timeID","car_id").all()
     points=PointsPrediction.objects.order_by("frame_id", "coord_id").all()
+    lines=LinesPrediction.objects.all()
+
     print(len(points))
     points_list=[]
     frame_id=[]
@@ -42,7 +44,16 @@ def index(request):
         tmp.append(p.virsual_val)
         points_list.append(tmp)
     print(points_list)
-    context={'cars_list':json.dumps(cars_list) ,'time_id':json.dumps(time_id),'car_id':json.dumps(car_id),'points_list':json.dumps(points_list),'frame_id':json.dumps(frame_id),'coord_id':json.dumps(coord_id)}
+
+    lines_list=[]
+    lines_frame_id=[]
+    lines_coord_id=[]
+    for p in lines:
+        lines_list.append([[p.start_longitude,p.start_latitude],[p.end_longitude,p.end_latitude]])
+        lines_frame_id.append(p.frame_id)
+        lines_coord_id.append(p.coord_id)
+
+    context={'cars_list':json.dumps(cars_list) ,'time_id':json.dumps(time_id),'car_id':json.dumps(car_id),'points_list':json.dumps(points_list),'frame_id':json.dumps(frame_id),'coord_id':json.dumps(coord_id),'lines_list':json.dumps(lines_list),'lines_frame_id':json.dumps(lines_frame_id),'lines_coord_id':json.dumps(lines_coord_id)}
     # context ={}
     return render(request,'StreetCrowd/index.html',context)
 
