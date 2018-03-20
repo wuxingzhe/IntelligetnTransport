@@ -1,7 +1,7 @@
 import os
 import threading
 
-from StreetCrowd.models import CarStatus, PointsPrediction
+from StreetCrowd.models import CarStatus, PointsPrediction, LinesPrediction
 from django.db import transaction
 
 
@@ -37,8 +37,33 @@ class handleFileThread(threading.Thread):
                         print("The size of PointsPrediction table: ", len(PointsPrediction.objects.all()))
             except Exception as e:
                 print(e)
+            print("The size of PointsPrediction table: ", len(PointsPrediction.objects.all()))
+        elif filename == 'lines.csv':
+            # threadLock = threading.Lock()
+            # threadLock.acquire()
+            cnt = 0
+            try:
+                with transaction.atomic():
+                    LinesPrediction.objects.all().delete()
+                    with open(self.filepath, 'r') as file:
+                        for line in file:
+                            cnt += 1
+                            line = line[:-1].split(',')
+                            if len(line) > 0:
+                                LinesPrediction.objects.create(start_longitude=float(line[0]),
+                                                               start_latitude=float(line[1]),end_longitude=float(line[2]),
+                                                               end_latitude=float(line[3]),
+                                                        frame_id=int(line[4]),coord_id = int(line[5]))
+                            print(line)
+                            if (cnt % 50 == 0):
+                                print("%d data inserted" % (cnt))
+                        print("insertion complete")
+                        # PointsPrediction.objects.all().order_by("frame_id", "coord_id")
+                        print("The size of LinesPrediction table: ", len(LinesPrediction.objects.all()))
+            except Exception as e:
+                print(e)
         else:
-            threadLock = threading.Lock()
+            # threadLock = threading.Lock()
             # threadLock.acquire()
             cnt = 0
             try:
