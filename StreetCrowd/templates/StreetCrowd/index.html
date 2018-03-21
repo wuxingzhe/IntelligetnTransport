@@ -145,11 +145,11 @@
 
     var myChart = new EchartsLayer(map);
 
-    map.on('load', function () {
+    /*map.on('load', function () {
         var marker = new L.Marker([116.43790643999972, 39.94022588198814], {draggable:true});
         map.addLayer(marker);
         marker.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-    });
+    });*/
     myChart.chart.setOption(option = {
         GLMap: {},
         visualMap: {	// 视觉映射组件
@@ -653,7 +653,7 @@
                     min: 0,
                     max: 300,
                     splitNumber: 5,
-                    seriesIndex: 0,
+                    //seriesIndex: 0,
                     calculable: true,
                     inRange: {
                         color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
@@ -759,7 +759,7 @@
                     min: 0,
                     max: 300,
                     splitNumber: 5,
-                    seriesIndex: 0,
+                    //seriesIndex: 0,
                     calculable: true,
                     inRange: {
                         color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
