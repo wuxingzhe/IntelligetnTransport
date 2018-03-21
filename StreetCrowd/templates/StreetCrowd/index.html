@@ -16,11 +16,13 @@
     <script src="../../static/StreetCrowd/js/bootstrap.min.js"></script>
     <script src="../../static/StreetCrowd/js/mapbox-gl.js"></script>
     <script src="../../static/StreetCrowd/js/popper.min.js"></script>
+    <script src="../../static/StreetCrowd/js/leaflet.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/default.css"/>
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/component.css"/>
     <link rel='stylesheet' href='../../static/StreetCrowd/css/bootstrap.css'/>
     <link href='../../static/StreetCrowd/css/mapbox-gl.css' rel='stylesheet'/>
+    <link rel='stylesheet' href='../../static/StreetCrowd/css/leaflet.css'/>
     <style type="text/css">
         .mapboxgl-ctrl-attrib {
             font-size: 10px;
@@ -142,6 +144,12 @@
 
 
     var myChart = new EchartsLayer(map);
+
+    map.on('load', function () {
+        var marker = new L.Marker([116.43790643999972, 39.94022588198814], {draggable:true});
+        map.addLayer(marker);
+        marker.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+    });
     myChart.chart.setOption(option = {
         GLMap: {},
         visualMap: {	// 视觉映射组件
@@ -153,46 +161,13 @@
                 color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
             }
         },
-        series: [{
-            name: 'Top5',
-            type: 'effectScatter',
-            coordinateSystem: 'GLMap',
-            symbolSize: 30,
-            rippleEffect: {
-                period: 5,
-                scale: 5,
-                brushType: 'stroke'
-            },
-            data: [
-                [116.43790643999972, 39.94022588198814, 280],
-                [116.34735333333333, 39.880183333333335, 220],
-                [116.45065111111106, 39.89267888888887, 220]
-            ]/*,
-            markPoint: {
-                symbol: 'pin',
-                symbolSize: 30,
-                effect: {
-                    show: true,
-                    shadowBlur: 0
-                },
-                itemStyle: {
-                    normal: {
-                        label: {show: false}
-                    }
-                },
-                data: [
-                    {name: 1, coord: [116.43790643999972, 39.94022588198814, 280]},
-                    {name: 2, coord: [116.34735333333333, 39.880183333333335, 220]},
-                    {name: 3, coord: [116.45065111111106, 39.89267888888887, 220]}
-                ]
-            }*/
-        }
-        ,{
+        series: [
+        {
             name: 'Top5',
             type: 'scatter',
                 symbol:'pin',
             coordinateSystem: 'GLMap',
-            symbolSize: 30,
+            symbolSize: 15,
                 itemStyle:{borderWidth:2,borderColor:'#3058e6'},
             data: [
                 [116.43790643999972, 39.94022588198814, 280],
@@ -415,6 +390,68 @@
                         },
                         data: pointData,
                     },
+                        {
+                            name: 'Top5',
+                            type: 'scatter',
+                            symbol:'pin',
+                            coordinateSystem: 'GLMap',
+                            symbolSize: 15,
+                            itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                            data:pointData,
+                        },
+                        {
+                            type: 'lines',
+                            coordinateSystem: 'GLMap',
+                            data: [],
+                            zlevel:1,
+                            /*effect: {
+                             show: true,
+                             period: 2,
+                             trailLength: 0.7,
+                             color: 'yellow',
+                             symbolSize: 3,
+                             symbol:'circle',
+                             },*/
+                            lineStyle: {
+                                normal: {
+
+                                    color: '#F80000',
+                                    width: 2,
+                                    curveness: 0.2
+                                }
+                            },
+
+                            blendMode: 'lighter',
+
+                            polyline: false,
+                        },
+                        {
+                            type: 'lines',
+                            coordinateSystem: 'GLMap',
+                            data: [],
+                            effect: {
+                                show: true,
+                                constantSpeed: 50,
+                                trailWidth: 4,
+                                trailLength: 0.4,
+                                trailOpacity: 1,
+                                spotIntensity: 10,
+                                curveness: 0.2,
+                                period:2,
+                            },
+
+                            blendMode: 'lighter',
+
+                            polyline: false,
+
+                            lineStyle: {
+                                width: 4,
+                                color: 'rgb(200, 40, 0)',
+                                opacity: 0.,
+                                curveness: 0.2,
+                            },
+                            zlevel: 2
+                        }
                     ]
 
 
@@ -494,6 +531,15 @@
                         },
                         data: pointData,
                     },
+                        {
+                            name: 'Top5',
+                            type: 'scatter',
+                            symbol:'pin',
+                            coordinateSystem: 'GLMap',
+                            symbolSize: 15,
+                            itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                            data: pointData,
+                        },
                         {
                             type: 'lines',
                             coordinateSystem: 'GLMap',
@@ -622,8 +668,18 @@
                     minOpacity: 0.5,
                     pointSize: 9,
                     blurSize: 7,
-                    //zlevel:2
+                    zlevel:1
                 },
+                    {
+                        name: 'Top5',
+                        type: 'scatter',
+                        symbol:'pin',
+                        coordinateSystem: 'GLMap',
+                        symbolSize: 15,
+                        itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                        data: pointData,
+                        zlevel:3,
+                    },
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
@@ -720,6 +776,15 @@
                     blurSize: 7,
                     //zlevel:2,
                 },
+                    {
+                        name: 'Top5',
+                        type: 'scatter',
+                        symbol:'pin',
+                        coordinateSystem: 'GLMap',
+                        symbolSize: 15,
+                        itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                        data: pointData,
+                    },
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
