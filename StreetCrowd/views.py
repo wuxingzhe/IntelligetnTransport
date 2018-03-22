@@ -8,6 +8,10 @@ import json
 # Create your views here.
 from StreetCrowd.utils import handle_upload_file, handleFileThread
 
+def main(request):
+    context={}
+    return render(request,'StreetCrowd/main.html',context)
+
 
 def index(request):
     cars_list=[]
