@@ -530,6 +530,7 @@
                             brushType: 'stroke'
                         },
                         data: pointData,
+                        zlevel:3
                     },
                         {
                             name: 'Top5',
@@ -539,6 +540,7 @@
                             symbolSize: 15,
                             itemStyle:{borderWidth:2,borderColor:'#3058e6'},
                             data: pointData,
+                            zlevel:4
                         },
                         {
                             type: 'lines',
@@ -643,11 +645,11 @@
              else{
              */
 
-            map.setZoom(11);
+            //map.setZoom(11);
             myChart.chart.setOption(option = {
-                GLMap: {
+                /*GLMap: {
                     roam: true
-                },
+                },*/
                 visualMap: {	// 视觉映射组件
                     type: 'continuous',
                     min: 0,
@@ -679,6 +681,7 @@
                         itemStyle:{borderWidth:2,borderColor:'#3058e6'},
                         data: pointData,
                         zlevel:3,
+                        animation:false
                     },
                     {
                         type: 'lines',
@@ -749,11 +752,11 @@
                 }
             }
 
-            map.setZoom(11);
+            //map.setZoom(11);
             myChart.chart.setOption(option = {
-                GLMap: {
+                /*GLMap: {
                     roam: true
-                },
+                },*/
                 visualMap: {	// 视觉映射组件
                     type: 'continuous',
                     min: 0,
@@ -765,17 +768,7 @@
                         color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
                     }
                 },
-                series: [{
-                    type: 'heatmap',
-                    coordinateSystem: 'GLMap',
-                    data: dataMid,
-                    minAlpha: 0.1,
-                    maxOpacity: 1.0,
-                    minOpacity: 0.5,
-                    pointSize: 9,
-                    blurSize: 7,
-                    //zlevel:2,
-                },
+                series: [
                     {
                         name: 'Top5',
                         type: 'scatter',
@@ -784,6 +777,7 @@
                         symbolSize: 15,
                         itemStyle:{borderWidth:2,borderColor:'#3058e6'},
                         data: pointData,
+                        animation:false
                     },
                     {
                         type: 'lines',
@@ -837,7 +831,18 @@
                             curveness: 0.2,
                         },
                         zlevel: 2
-                    }]
+                    },
+                    {
+                    type: 'heatmap',
+                    coordinateSystem: 'GLMap',
+                    data: dataMid,
+                    minAlpha: 0.1,
+                    maxOpacity: 1.0,
+                    minOpacity: 0.5,
+                    pointSize: 9,
+                    blurSize: 7,
+                    //zlevel:2,
+                }]
 
 
             });
