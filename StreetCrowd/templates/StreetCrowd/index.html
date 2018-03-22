@@ -167,12 +167,9 @@
             type: 'scatter',
                 symbol:'pin',
             coordinateSystem: 'GLMap',
-            symbolSize: 15,
+            symbolSize: 20,
                 itemStyle:{borderWidth:2,borderColor:'#3058e6'},
             data: [
-                [116.43790643999972, 39.94022588198814, 280],
-                [116.34735333333333, 39.880183333333335, 220],
-                [116.45065111111106, 39.89267888888887, 220]
             ],
             }
         /*,
@@ -365,7 +362,7 @@
                         linesId++;
                 }*/
 
-                map.setZoom(12);
+                //map.setZoom(12);
 
                 myChart.chart.setOption(option = {
                     GLMap: {},
@@ -382,7 +379,7 @@
                         name: 'Top5',
                         type: 'effectScatter',
                         coordinateSystem: 'GLMap',
-                        symbolSize: 15,
+                        symbolSize: 20,
                         rippleEffect: {
                             period: 5,
                             scale: 5,
@@ -395,7 +392,7 @@
                             type: 'scatter',
                             symbol:'pin',
                             coordinateSystem: 'GLMap',
-                            symbolSize: 15,
+                            symbolSize: 25,
                             itemStyle:{borderWidth:2,borderColor:'#3058e6'},
                             data:pointData,
                         },
@@ -506,7 +503,7 @@
                     linesId++;
             }
 
-                map.setZoom(12);
+                //map.setZoom(12);
 
                 myChart.chart.setOption(option = {
                     GLMap: {},
@@ -523,7 +520,7 @@
                         name: 'Top5',
                         type: 'effectScatter',
                         coordinateSystem: 'GLMap',
-                        symbolSize: 15,
+                        symbolSize: 20,
                         rippleEffect: {
                             period: 5,
                             scale: 5,
@@ -537,7 +534,7 @@
                             type: 'scatter',
                             symbol:'pin',
                             coordinateSystem: 'GLMap',
-                            symbolSize: 15,
+                            symbolSize: 25,
                             itemStyle:{borderWidth:2,borderColor:'#3058e6'},
                             data: pointData,
                             zlevel:4
@@ -677,7 +674,7 @@
                         type: 'scatter',
                         symbol:'pin',
                         coordinateSystem: 'GLMap',
-                        symbolSize: 15,
+                        symbolSize: 25,
                         itemStyle:{borderWidth:2,borderColor:'#3058e6'},
                         data: pointData,
                         zlevel:3,
@@ -686,7 +683,7 @@
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
-                        data: [],
+                        data: linesData,
                         zlevel:1,
                         /*effect: {
                          show: true,
@@ -706,13 +703,14 @@
                         },
 
                         blendMode: 'lighter',
+                        animation:false,
 
                         polyline: false,
                     },
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
-                        data: [],
+                        data: linesData,
                         effect: {
                             show: true,
                             constantSpeed: 50,
@@ -734,7 +732,8 @@
                             opacity: 0.,
                             curveness: 0.2,
                         },
-                        zlevel: 2
+                        zlevel: 2,
+                        animation:false
                     }]}
                     );
             // }
@@ -774,7 +773,7 @@
                         type: 'scatter',
                         symbol:'pin',
                         coordinateSystem: 'GLMap',
-                        symbolSize: 15,
+                        symbolSize: 25,
                         itemStyle:{borderWidth:2,borderColor:'#3058e6'},
                         data: pointData,
                         animation:false
@@ -782,7 +781,7 @@
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
-                        data: [],
+                        data: linesData,
                         zlevel:1,
                         /*effect: {
                          show: true,
@@ -804,11 +803,12 @@
                         blendMode: 'lighter',
 
                         polyline: false,
+                        animation:false,
                     },
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
-                        data: [],
+                        data: linesData,
                         effect: {
                             show: true,
                             constantSpeed: 50,
@@ -830,7 +830,8 @@
                             opacity: 0.,
                             curveness: 0.2,
                         },
-                        zlevel: 2
+                        zlevel: 2,
+                        animation:false
                     },
                     {
                     type: 'heatmap',
