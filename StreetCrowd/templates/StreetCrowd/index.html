@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能交通系统</title>
-    {#    <script src="../../static/StreetCrowd/js/jquery.min.js"></script>#}
+        <script src="../../static/StreetCrowd/js/jquery.min.js"></script>
     {#    <script src="../../static/StreetCrowd/js/jquery-3.3.1.min.js"></script>#}
     <script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.js"></script>
     <script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
@@ -452,7 +452,7 @@
                 });
 
                 coordPosition = 1;
-                document.getElementById("timer").innerHTML=linesData.length;
+                //document.getElementById("timer").innerHTML=linesData.length;
                 //this.sleep(3);
                 setTimeout(function(){requestAnimFrame(animloop)},3000);
                 return
@@ -593,7 +593,7 @@
 
 
                 });
-                document.getElementById("timer").innerHTML=linesData.length;
+                //document.getElementById("timer").innerHTML=linesData.length;
                 coordPosition++;
                 //this.sleep(3);
                 setTimeout(function(){requestAnimFrame(animloop)},3000);
@@ -857,7 +857,7 @@
 {#            }#}
              myReg = requestAnimFrame(animloop);
 
-        document.getElementById("timer").innerHTML=lines_list.length;
+        //document.getElementById("timer").innerHTML=lines_list.length;
     }
 
     function selectData() {
