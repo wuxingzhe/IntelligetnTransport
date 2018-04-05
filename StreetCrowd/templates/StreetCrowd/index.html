@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能交通系统</title>
-        <script src="../../static/StreetCrowd/js/jquery.min.js"></script>
+    <script src="../../static/StreetCrowd/js/jquery.min.js"></script>
     {#    <script src="../../static/StreetCrowd/js/jquery-3.3.1.min.js"></script>#}
     <script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.js"></script>
     <script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
@@ -17,12 +17,15 @@
     <script src="../../static/StreetCrowd/js/mapbox-gl.js"></script>
     <script src="../../static/StreetCrowd/js/popper.min.js"></script>
     <script src="../../static/StreetCrowd/js/leaflet.js"></script>
+    <script src="../../static/StreetCrowd/js/html5shiv.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/default.css"/>
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/component.css"/>
-    <link rel='stylesheet' href='../../static/StreetCrowd/css/bootstrap.css'/>
+    <link rel='stylesheet' href='../../static/StreetCrowd/css/bootstrap.min.css'/>
     <link href='../../static/StreetCrowd/css/mapbox-gl.css' rel='stylesheet'/>
     <link rel='stylesheet' href='../../static/StreetCrowd/css/leaflet.css'/>
+    <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/htmleaf-demo.css">
+    <link rel="stylesheet" href="../../static/StreetCrowd/css/stylePlugin.css">
     <style type="text/css">
         .mapboxgl-ctrl-attrib {
             font-size: 10px;
@@ -56,6 +59,16 @@
                 </button>
             </li>
             <li>
+                <button type="button" class="btn btn-primary dr-icon dr-icon-bullhorn"
+                        onclick="stopAnimation()" style="background-color:#91cfa1;">查看预测结果
+                </button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-primary dr-icon dr-icon-bullhorn"
+                        onclick="stopAnimation()" style="background-color:#91cfa1;">查看拥堵分析
+                </button>
+            </li>
+            <li>
                 <button type="button" class="btn btn-primary dr-icon dr-icon-switch"
                         onclick="stopAnimation()" style="background-color:#91cfa1;">停止智能系统
                 </button>
@@ -78,7 +91,7 @@
             {#            <form id = "upload"  action="/StreetCrowd/upload/" method="post" enctype="multipart/form-data" accept-charset="utf-8">#}
             <form id="upload" action="" enctype="multipart/form-data" accept-charset="utf-8">
 
-{#                {% csrf_token %}#}
+                {#                {% csrf_token %}#}
                 <div class="modal-body">
 
                     <input type="file" class="file-input" name="file" id="fileUpload">
@@ -95,15 +108,15 @@
 </div>
 
 <script type="text/javascript">
-{#    {% csrf_token %}#}
+    {#    {% csrf_token %}#}
     $.ajaxSetup({
-    data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
-});
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+    });
     $("#import").click(function () {
         //alert("post");
         var formData = new FormData();
         formData.append("file", $("#fileUpload")[0].files[0]);
-{#        var csrftoken = Cookies.get('csrftoken');#}
+        {#        var csrftoken = Cookies.get('csrftoken');#}
         $.ajax({
             //几个参数需要注意一下
             url: "/StreetCrowd/upload/",//url
@@ -143,10 +156,10 @@
     var myChart = new EchartsLayer(map);
 
     /*map.on('load', function () {
-        var marker = new L.Marker([116.43790643999972, 39.94022588198814], {draggable:true});
-        map.addLayer(marker);
-        marker.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-    });*/
+     var marker = new L.Marker([116.43790643999972, 39.94022588198814], {draggable:true});
+     map.addLayer(marker);
+     marker.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+     });*/
     myChart.chart.setOption(option = {
         GLMap: {},
         visualMap: {	// 视觉映射组件
@@ -159,90 +172,90 @@
             }
         },
         series: [
-        {
-            name: 'Top5',
-            type: 'scatter',
+            {
+                name: 'Top5',
+                type: 'scatter',
                 symbol:'pin',
-            coordinateSystem: 'GLMap',
-            symbolSize: 20,
+                coordinateSystem: 'GLMap',
+                symbolSize: 20,
                 itemStyle:{borderWidth:2,borderColor:'#3058e6'},
-            data: [
-            ],
+                data: [
+                ],
             }
-        /*,
-            {
-                type: 'lines',
-                coordinateSystem: 'GLMap',
-                data: [{
-                    coords: [
-                        [116.43790643999972, 39.94022588198814],  // 起点
-                        [116.34735333333333, 39.880183333333335]   // 终点
-                        //
-                        //
-                        // 如果 polyline 为 true 还可以设置更多的点
-                    ]
-                    // 统一的样式设置
+            /*,
+             {
+             type: 'lines',
+             coordinateSystem: 'GLMap',
+             data: [{
+             coords: [
+             [116.43790643999972, 39.94022588198814],  // 起点
+             [116.34735333333333, 39.880183333333335]   // 终点
+             //
+             //
+             // 如果 polyline 为 true 还可以设置更多的点
+             ]
+             // 统一的样式设置
 
-                }],
-                zlevel: 1,
-                effect: {
-                 show: true,
-                 period: 2,
-                 trailLength: 0.7,
-                 color: 'yellow',
-                 symbolSize: 3,
-                 symbol:'circle',
-                 },
-                lineStyle: {
-                    normal: {
+             }],
+             zlevel: 1,
+             effect: {
+             show: true,
+             period: 2,
+             trailLength: 0.7,
+             color: 'yellow',
+             symbolSize: 3,
+             symbol:'circle',
+             },
+             lineStyle: {
+             normal: {
 
-                        color: '#F80000',
-                        width: 2,
-                        curveness: 0.2
-                    }
-                },
+             color: '#F80000',
+             width: 2,
+             curveness: 0.2
+             }
+             },
 
-                blendMode: 'lighter',
+             blendMode: 'lighter',
 
-                polyline: false,
-            },
-            {
-                type: 'lines',
-                coordinateSystem: 'GLMap',
-                data: [{
-                    coords: [
-                        [116.43790643999972, 39.94022588198814],  // 起点
-                        [116.34735333333333, 39.880183333333335]   // 终点
-                        //
-                        //
-                        // 如果 polyline 为 true 还可以设置更多的点
-                    ]
-                    // 统一的样式设置
+             polyline: false,
+             },
+             {
+             type: 'lines',
+             coordinateSystem: 'GLMap',
+             data: [{
+             coords: [
+             [116.43790643999972, 39.94022588198814],  // 起点
+             [116.34735333333333, 39.880183333333335]   // 终点
+             //
+             //
+             // 如果 polyline 为 true 还可以设置更多的点
+             ]
+             // 统一的样式设置
 
-                }],
-                effect: {
-                    show: true,
-                    constantSpeed: 50,
-                    trailWidth: 4,
-                    trailLength: 0.4,
-                    trailOpacity: 1,
-                    spotIntensity: 10,
-                    curveness: 0.2,
-                    period: 2,
-                },
+             }],
+             effect: {
+             show: true,
+             constantSpeed: 50,
+             trailWidth: 4,
+             trailLength: 0.4,
+             trailOpacity: 1,
+             spotIntensity: 10,
+             curveness: 0.2,
+             period: 2,
+             },
 
-                blendMode: 'lighter',
+             blendMode: 'lighter',
 
-                polyline: false,
+             polyline: false,
 
-                lineStyle: {
-                    width: 4,
-                    color: 'rgb(200, 40, 0)',
-                    opacity: 0.,
-                    curveness: 0.2,
-                },
-                zlevel: 2
-            }*/
+             lineStyle: {
+             width: 4,
+             color: 'rgb(200, 40, 0)',
+             opacity: 0.,
+             curveness: 0.2,
+             },
+             zlevel: 2
+             }*/
         ]
 
 
@@ -343,21 +356,21 @@
                 }
 
                 /*var lineTotal=lines_list.length;
-                for(var i=linesId;i<lineTotal;i++){
-                    if(lines_frame_id[i]!=id){
-                        break;
-                    }
-                    else if(lines_coord_id[i]!=0){
-                        break;
-                    }
+                 for(var i=linesId;i<lineTotal;i++){
+                 if(lines_frame_id[i]!=id){
+                 break;
+                 }
+                 else if(lines_coord_id[i]!=0){
+                 break;
+                 }
 
-                    linesData.push({coords:lines_list[i]});
-                    if(i==lineTotal-1){
-                        linesId=0;
-                    }
-                    else
-                        linesId++;
-                }*/
+                 linesData.push({coords:lines_list[i]});
+                 if(i==lineTotal-1){
+                 linesId=0;
+                 }
+                 else
+                 linesId++;
+                 }*/
 
                 //map.setZoom(12);
 
@@ -483,22 +496,22 @@
                         pointId++;
                 }
 
-            var lineTotal=lines_list.length;
-            for(var i=linesId;i<lineTotal;i++){
-                if(lines_frame_id[i]!=id){
-                    break;
-                }
-                else if(lines_coord_id[i]!=coordPosition){
-                    break;
-                }
+                var lineTotal=lines_list.length;
+                for(var i=linesId;i<lineTotal;i++){
+                    if(lines_frame_id[i]!=id){
+                        break;
+                    }
+                    else if(lines_coord_id[i]!=coordPosition){
+                        break;
+                    }
 
-                linesData.push({coords:lines_list[i]});
-                if(i==lineTotal-1){
-                    linesId=0;
+                    linesData.push({coords:lines_list[i]});
+                    if(i==lineTotal-1){
+                        linesId=0;
+                    }
+                    else
+                        linesId++;
                 }
-                else
-                    linesId++;
-            }
 
                 //map.setZoom(12);
 
@@ -598,19 +611,19 @@
                 //this.sleep(3);
                 setTimeout(function(){requestAnimFrame(animloop)},3000);
                 return
-               // setTimeout(animloop,3000);
+                // setTimeout(animloop,3000);
             }
             /*else if(predictionIteral==179){
-                predictionIteral=0;
-            }
-            else {
-                predictionIteral++;
-            }*/
+             predictionIteral=0;
+             }
+             else {
+             predictionIteral++;
+             }*/
         }
         else if (counter == 0) {
             selectData();
-            predictionStatus = 0;
-            predictionStart = 0;
+            //predictionStatus = 0;
+            //predictionStart = 0;
             /*if(bmap.getZoom()>15)
              {
              myChart.setOption({
@@ -642,8 +655,8 @@
             //map.setZoom(11);
             myChart.chart.setOption(option = {
                 /*GLMap: {
-                    roam: true
-                },*/
+                 roam: true
+                 },*/
                 visualMap: {	// 视觉映射组件
                     type: 'continuous',
                     min: 0,
@@ -732,7 +745,7 @@
                         zlevel: 2,
                         animation:false
                     }]}
-                    );
+            );
             // }
 
             counter++;
@@ -751,8 +764,8 @@
             //map.setZoom(11);
             myChart.chart.setOption(option = {
                 /*GLMap: {
-                    roam: true
-                },*/
+                 roam: true
+                 },*/
                 visualMap: {	// 视觉映射组件
                     type: 'continuous',
                     min: 0,
@@ -831,16 +844,16 @@
                         animation:false
                     },
                     {
-                    type: 'heatmap',
-                    coordinateSystem: 'GLMap',
-                    data: dataMid,
-                    minAlpha: 0.1,
-                    maxOpacity: 1.0,
-                    minOpacity: 0.5,
-                    pointSize: 9,
-                    blurSize: 7,
-                    //zlevel:2,
-                }]
+                        type: 'heatmap',
+                        coordinateSystem: 'GLMap',
+                        data: dataMid,
+                        minAlpha: 0.1,
+                        maxOpacity: 1.0,
+                        minOpacity: 0.5,
+                        pointSize: 9,
+                        blurSize: 7,
+                        //zlevel:2,
+                    }]
 
 
             });
@@ -852,10 +865,10 @@
         }
 
         if (isStart == 1)
-{#            if(counter==0 && predictionCount<=23&& id==predictionTime[predictionCount] && predictionStatus==0){#}
-{#                myReg = this.setTimeout(requestAnimFrame(animloop),3000);#}
-{#            }#}
-             myReg = requestAnimFrame(animloop);
+        {#            if(counter==0 && predictionCount<=23&& id==predictionTime[predictionCount] && predictionStatus==0){#}
+            {#                myReg = this.setTimeout(requestAnimFrame(animloop),3000);#}
+            {#            }#}
+        myReg = requestAnimFrame(animloop);
 
         //document.getElementById("timer").innerHTML=lines_list.length;
     }

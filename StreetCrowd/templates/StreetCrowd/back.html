@@ -1,51 +1,963 @@
 <!DOCTYPE html>
-<html lang="en" style="width: 100%;height:100%;">
+<html lang="en" style="width:100%;height:100%;margin:0;">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/default.css" />
-    <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/component.css" />
-    <script src="../../static/StreetCrowd/echarts/echarts.js"></script>
-    <script src="../../static/StreetCrowd/js/bmap.js"></script>
-    <script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
-    <script src="http://api.map.baidu.com/api?v=2.0&ak=	fbe6snfTOIL7y9MyEIUvl5QvN8qL5v32"></script>
-    <script src="../../static/StreetCrowd/js/ytmenu.js"></script>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>智能交通系统</title>
+	<script src="../../static/StreetCrowd/js/jquery.min.js"></script>
+	{#    <script src="../../static/StreetCrowd/js/jquery-3.3.1.min.js"></script>#}
+	<script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.js"></script>
+	<script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
+	<script src="../../static/StreetCrowd/echarts/echarts.min.js"></script>
+	<script src="../../static/StreetCrowd/js/EchartsLayer.js"></script>
+	<script src="../../static/StreetCrowd/js/echarts-gl.min.js"></script>
+	<script src="../../static/StreetCrowd/js/my.js"></script>
+	<script src="../../static/StreetCrowd/js/bootstrap.min.js"></script>
+	<script src="../../static/StreetCrowd/js/mapbox-gl.js"></script>
+	<script src="../../static/StreetCrowd/js/popper.min.js"></script>
+	<script src="../../static/StreetCrowd/js/leaflet.js"></script>
+	<script src="../../static/StreetCrowd/js/html5shiv.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/default.css"/>
+	<link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/component.css"/>
+	<link rel='stylesheet' href='../../static/StreetCrowd/css/bootstrap.min.css'/>
+	<link href='../../static/StreetCrowd/css/mapbox-gl.css' rel='stylesheet'/>
+	<link rel='stylesheet' href='../../static/StreetCrowd/css/leaflet.css'/>
+	<link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/htmleaf-demo.css">
+	<link rel="stylesheet" href="../../static/StreetCrowd/css/stylePlugin.css">
+	<style type="text/css">
+		.mapboxgl-ctrl-attrib {
+			font-size: 10px;
+		}
+	</style>
 </head>
-<div id="main" style="width: 100%;height:100%;float:right;">
+<body style="width:100%;height:100%;margin:0;">
+
+<div id="main" style="width:100%;height:100%;float:right;margin:0;font-size:36px;" title="智能交通系统">
+</div>
+
+<div class="side">
+	<nav class="dr-menu">
+		<div class="dr-trigger" style="color:#91cfa1;position:absolute;top:0px;left:0px;"><span
+				class="dr-icon dr-icon-menu"></span></div>
+		<ul>
+			<li>
+				<button type="button" class="btn btn-primary dr-icon dr-icon-download" data-toggle="modal"
+						data-target="#DataLoadModal" style="background-color:#91cfa1;">系统输入接口
+				</button>
+			</li>
+			<li>
+				<button type="button" class="btn btn-primary dr-icon dr-icon-camera"
+						onclick="loadAnimaton()" style="background-color:#91cfa1;">
+					启动智能系统
+				</button>
+			</li>
+			<li>
+				<button type="button" class="btn btn-primary dr-icon dr-icon-bullhorn"
+						onclick="startAnimation()" style="background-color:#91cfa1;">运行智能系统
+				</button>
+			</li>
+			<li>
+				<button type="button" class="btn btn-primary dr-icon dr-icon-switch"
+						onclick="stopAnimation()" style="background-color:#91cfa1;">停止智能系统
+				</button>
+			</li>
+		</ul>
+	</nav>
+</div>
+
+
+<!--Data Load Modal -->
+<div class="modal fade" id="DataLoadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">上传数据</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			{#            <form id = "upload"  action="/StreetCrowd/upload/" method="post" enctype="multipart/form-data" accept-charset="utf-8">#}
+			<form id="upload" action="" enctype="multipart/form-data" accept-charset="utf-8">
+
+				{#                {% csrf_token %}#}
+				<div class="modal-body">
+
+					<input type="file" class="file-input" name="file" id="fileUpload">
+
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" id="import">确认</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
 </div>
 
 <script type="text/javascript">
-    var myChart = echarts.init(document.getElementById('main'));
-    myChart.setOption({
-    bmap: {
-        center: [116.402030, 39.937034],
-        zoom: 13.7,
-        roam: true,
+    {#    {% csrf_token %}#}
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+    });
+    $("#import").click(function () {
+        //alert("post");
+        var formData = new FormData();
+        formData.append("file", $("#fileUpload")[0].files[0]);
+        {#        var csrftoken = Cookies.get('csrftoken');#}
+        $.ajax({
+            //几个参数需要注意一下
+            url: "/StreetCrowd/upload/",//url
+            type: 'POST',//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            headers:{"X-CSRFToken":'{{ csrf_token }}'},
+            contentType:false,
+            processData:false,
+            data: formData,
+            //data:null,
+            success: function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
 
-    },
-    series: [{
-        type: 'scatter',
-        coordinateSystem: 'bmap',
-        data: [ [120, 30, 1] ]
-    }]
+                if (result.resultCode == 200) {
+
+                    window.location.href = "/StreetCrowd";
+                }
 
 
-});
- </script>
+            },
+            error: function () {
+                alert("异常！");
+            }
+        });
+    })
+</script>
+<script type="text/javascript">
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY2l0eXdhbmRlciIsImEiOiJjamE4ODM2YjQwNDB5MzNwY2hvanV2eDhiIn0.QCJ3-UnEddwCuxg8uvhLcQ';
+    var map = new mapboxgl.Map({
+        container: 'main',
+        style: 'mapbox://styles/citywander/cje6hjeijgd862sscrg4its0r',
+        center: [116.38959387, 39.91531341],
+        zoom: 11
+    });
 
-<div class="side" >
-					<nav class="dr-menu">
-						<div class="dr-trigger" style="color:#f0f0f0;"><span class="dr-icon dr-icon-menu"></span></div>
-						<ul>
-							<li><a class="dr-icon dr-icon-user" href="#"></a></li>
-							<li><a class="dr-icon dr-icon-camera" href="#"></a></li>
-							<li><a class="dr-icon dr-icon-heart" href="#"></a></li>
-							<li><a class="dr-icon dr-icon-bullhorn" href="#"></a></li>
-							<li><a class="dr-icon dr-icon-download" href="#"></a></li>
-							<li><a class="dr-icon dr-icon-settings" href="#"></a></li>
-							<li><a class="dr-icon dr-icon-switch" href="#"></a></li>
-						</ul>
-					</nav>
-				</div>
+
+    var myChart = new EchartsLayer(map);
+
+	/*map.on('load', function () {
+	 var marker = new L.Marker([116.43790643999972, 39.94022588198814], {draggable:true});
+	 map.addLayer(marker);
+	 marker.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+	 });*/
+    myChart.chart.setOption(option = {
+        GLMap: {},
+        visualMap: {	// 视觉映射组件
+            type: 'continuous',
+            min: 0,
+            max: 300,
+            calculable: true,
+            inRange: {
+                color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+            }
+        },
+        series: [
+            {
+                name: 'Top5',
+                type: 'scatter',
+                symbol:'pin',
+                coordinateSystem: 'GLMap',
+                symbolSize: 20,
+                itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                data: [
+                ],
+            }
+			/*,
+			 {
+			 type: 'lines',
+			 coordinateSystem: 'GLMap',
+			 data: [{
+			 coords: [
+			 [116.43790643999972, 39.94022588198814],  // 起点
+			 [116.34735333333333, 39.880183333333335]   // 终点
+			 //
+			 //
+			 // 如果 polyline 为 true 还可以设置更多的点
+			 ]
+			 // 统一的样式设置
+
+			 }],
+			 zlevel: 1,
+			 effect: {
+			 show: true,
+			 period: 2,
+			 trailLength: 0.7,
+			 color: 'yellow',
+			 symbolSize: 3,
+			 symbol:'circle',
+			 },
+			 lineStyle: {
+			 normal: {
+
+			 color: '#F80000',
+			 width: 2,
+			 curveness: 0.2
+			 }
+			 },
+
+			 blendMode: 'lighter',
+
+			 polyline: false,
+			 },
+			 {
+			 type: 'lines',
+			 coordinateSystem: 'GLMap',
+			 data: [{
+			 coords: [
+			 [116.43790643999972, 39.94022588198814],  // 起点
+			 [116.34735333333333, 39.880183333333335]   // 终点
+			 //
+			 //
+			 // 如果 polyline 为 true 还可以设置更多的点
+			 ]
+			 // 统一的样式设置
+
+			 }],
+			 effect: {
+			 show: true,
+			 constantSpeed: 50,
+			 trailWidth: 4,
+			 trailLength: 0.4,
+			 trailOpacity: 1,
+			 spotIntensity: 10,
+			 curveness: 0.2,
+			 period: 2,
+			 },
+
+			 blendMode: 'lighter',
+
+			 polyline: false,
+
+			 lineStyle: {
+			 width: 4,
+			 color: 'rgb(200, 40, 0)',
+			 opacity: 0.,
+			 curveness: 0.2,
+			 },
+			 zlevel: 2
+			 }*/
+        ]
+
+
+    });
+
+    var id = 1;//timeID
+    var counter = 0;//统计动画次数，以0为周期
+    var lineId = 0;//数据已经读到哪一行
+    var cars_list ={{cars_list|safe}};
+    var length = cars_list.length;
+    var time_id ={{time_id|safe}};
+    var car_id ={{car_id|safe}};
+
+    var dataL = [];//这一时刻的数据
+    var dataR = [];//下一时刻的数据
+    var dataMid = [];//二个时刻中间的过渡数据
+    var addition = [];//过渡增量
+
+    var spTmp = [];
+    var loTmp = [];
+    var laTmp = [];
+
+    var myReg;//requestAnimationFrame返回值
+    var isStart;//是否暂停动画
+
+    var points_list ={{points_list|safe}};
+    var frame_id ={{frame_id|safe}};
+    var coord_id ={{coord_id|safe}};
+
+    var predictionTime = new Array(5, 8, 10, 12, 14, 16, 18, 20, 24, 29, 31, 33, 37, 40, 42, 44, 46, 48, 50, 52, 56, 58, 60, 62);
+    var predictionCount = 0;
+    var predictionStatus = 0;
+    var predictionStart = 0;
+    var predictionIteral = 0;
+    var coordPosition = 0;
+
+    var pointData = [];
+    var pointId = 0;
+
+    var lines_list={{lines_list|safe}};
+    var lines_frame_id={{lines_frame_id|safe}};
+    var lines_coord_id={{lines_coord_id|safe}};
+
+    var linesData=[];
+    var linesId=0;
+
+    //animation
+    window.requestAnimFrame = (function () {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function (/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+    })();
+
+    window.cancelAnimFrame = (function () {
+        return window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+    })();
+
+    map.on('mousemove', function (e) {
+        document.getElementById("main").title = JSON.stringify(e.lngLat);
+    });
+
+    function animloop() {
+        if(counter==0 && predictionCount<=23&& id==predictionTime[predictionCount] && predictionStatus==0)
+        {
+            if(predictionStart==0)
+            {
+                predictionIteral=0;
+                predictionStart=1;
+                coordPosition=0;
+                pointData.splice(0,pointData.length);
+                linesData.splice(0,linesData.length);
+
+                var pointTotal=points_list.length;
+                for(var i=pointId;i<pointTotal;i++){
+                    if(frame_id[i]!=id){
+                        predictionCount++;
+                        predictionStatus = 1;
+                        break;
+                    }
+                    else if (coord_id[i] != 0) {
+                        break;
+                    }
+
+                    pointData.push(points_list[i]);
+                    if(i==pointTotal-1){
+                        pointId=0;
+                        predictionCount++;
+                        predictionStatus = 1;
+                        break;
+                    }
+                    else
+                        pointId++;
+                }
+
+				/*var lineTotal=lines_list.length;
+				 for(var i=linesId;i<lineTotal;i++){
+				 if(lines_frame_id[i]!=id){
+				 break;
+				 }
+				 else if(lines_coord_id[i]!=0){
+				 break;
+				 }
+
+				 linesData.push({coords:lines_list[i]});
+				 if(i==lineTotal-1){
+				 linesId=0;
+				 }
+				 else
+				 linesId++;
+				 }*/
+
+                //map.setZoom(12);
+
+                myChart.chart.setOption(option = {
+                    GLMap: {},
+                    visualMap: {	// 视觉映射组件
+                        type: 'continuous',
+                        min: 0,
+                        max: 300,
+                        calculable: true,
+                        inRange: {
+                            color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+                        }
+                    },
+                    series: [{
+                        name: 'Top5',
+                        type: 'effectScatter',
+                        coordinateSystem: 'GLMap',
+                        symbolSize: 20,
+                        rippleEffect: {
+                            period: 5,
+                            scale: 5,
+                            brushType: 'stroke'
+                        },
+                        data: pointData,
+                    },
+                        {
+                            name: 'Top5',
+                            type: 'scatter',
+                            symbol:'pin',
+                            coordinateSystem: 'GLMap',
+                            symbolSize: 25,
+                            itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                            data:pointData,
+                        },
+                        {
+                            type: 'lines',
+                            coordinateSystem: 'GLMap',
+                            data: [],
+                            zlevel:1,
+							/*effect: {
+							 show: true,
+							 period: 2,
+							 trailLength: 0.7,
+							 color: 'yellow',
+							 symbolSize: 3,
+							 symbol:'circle',
+							 },*/
+                            lineStyle: {
+                                normal: {
+
+                                    color: '#F80000',
+                                    width: 2,
+                                    curveness: 0.2
+                                }
+                            },
+
+                            blendMode: 'lighter',
+
+                            polyline: false,
+                        },
+                        {
+                            type: 'lines',
+                            coordinateSystem: 'GLMap',
+                            data: [],
+                            effect: {
+                                show: true,
+                                constantSpeed: 50,
+                                trailWidth: 4,
+                                trailLength: 0.4,
+                                trailOpacity: 1,
+                                spotIntensity: 10,
+                                curveness: 0.2,
+                                period:2,
+                            },
+
+                            blendMode: 'lighter',
+
+                            polyline: false,
+
+                            lineStyle: {
+                                width: 4,
+                                color: 'rgb(200, 40, 0)',
+                                opacity: 0.,
+                                curveness: 0.2,
+                            },
+                            zlevel: 2
+                        }
+                    ]
+
+
+                });
+
+                coordPosition = 1;
+                //document.getElementById("timer").innerHTML=linesData.length;
+                //this.sleep(3);
+                setTimeout(function(){requestAnimFrame(animloop)},3000);
+                return
+            }
+            else if (predictionIteral == 0) {
+                predictionIteral = 0;
+                var pointTotal=points_list.length;
+                for(var i=pointId;i<pointTotal;i++){
+                    if(frame_id[i]!=id){
+                        predictionCount++;
+                        predictionStatus = 1;
+                        break;
+                    }
+                    else if (coord_id[i] != coordPosition) {
+                        break;
+                    }
+
+                    pointData.push(
+                        points_list[i]);
+                    if(i==pointTotal-1){
+                        pointId=0;
+
+                        predictionCount++;
+                        predictionStatus = 1;
+                        break;
+                    }
+                    else
+                        pointId++;
+                }
+
+                var lineTotal=lines_list.length;
+                for(var i=linesId;i<lineTotal;i++){
+                    if(lines_frame_id[i]!=id){
+                        break;
+                    }
+                    else if(lines_coord_id[i]!=coordPosition){
+                        break;
+                    }
+
+                    linesData.push({coords:lines_list[i]});
+                    if(i==lineTotal-1){
+                        linesId=0;
+                    }
+                    else
+                        linesId++;
+                }
+
+                //map.setZoom(12);
+
+                myChart.chart.setOption(option = {
+                    GLMap: {},
+                    visualMap: {	// 视觉映射组件
+                        type: 'continuous',
+                        min: 0,
+                        max: 300,
+                        calculable: true,
+                        inRange: {
+                            color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+                        }
+                    },
+                    series: [{
+                        name: 'Top5',
+                        type: 'effectScatter',
+                        coordinateSystem: 'GLMap',
+                        symbolSize: 20,
+                        rippleEffect: {
+                            period: 5,
+                            scale: 5,
+                            brushType: 'stroke'
+                        },
+                        data: pointData,
+                        zlevel:3
+                    },
+                        {
+                            name: 'Top5',
+                            type: 'scatter',
+                            symbol:'pin',
+                            coordinateSystem: 'GLMap',
+                            symbolSize: 25,
+                            itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                            data: pointData,
+                            zlevel:4
+                        },
+                        {
+                            type: 'lines',
+                            coordinateSystem: 'GLMap',
+                            data: linesData,
+                            zlevel:1,
+							/*effect: {
+							 show: true,
+							 period: 2,
+							 trailLength: 0.7,
+							 color: 'yellow',
+							 symbolSize: 3,
+							 symbol:'circle',
+							 },*/
+                            lineStyle: {
+                                normal: {
+
+                                    color: '#F80000',
+                                    width: 2,
+                                    curveness: 0.2
+                                }
+                            },
+
+                            blendMode: 'lighter',
+
+                            polyline: false,
+                        },
+                        {
+                            type: 'lines',
+                            coordinateSystem: 'GLMap',
+                            data: linesData,
+                            effect: {
+                                show: true,
+                                constantSpeed: 50,
+                                trailWidth: 4,
+                                trailLength: 0.4,
+                                trailOpacity: 1,
+                                spotIntensity: 10,
+                                curveness: 0.2,
+                                period:2,
+                            },
+
+                            blendMode: 'lighter',
+
+                            polyline: false,
+
+                            lineStyle: {
+                                width: 4,
+                                color: 'rgb(200, 40, 0)',
+                                opacity: 0.,
+                                curveness: 0.2,
+                            },
+                            zlevel: 2
+                        }
+                    ]
+
+
+                });
+                //document.getElementById("timer").innerHTML=linesData.length;
+                coordPosition++;
+                //this.sleep(3);
+                setTimeout(function(){requestAnimFrame(animloop)},3000);
+                return
+                // setTimeout(animloop,3000);
+            }
+			/*else if(predictionIteral==179){
+			 predictionIteral=0;
+			 }
+			 else {
+			 predictionIteral++;
+			 }*/
+        }
+        else if (counter == 0) {
+            selectData();
+            predictionStatus = 0;
+            predictionStart = 0;
+			/*if(bmap.getZoom()>15)
+			 {
+			 myChart.setOption({
+			 bmap: {
+			 roam: true
+			 },
+			 visualMap: {	// 视觉映射组件
+			 type: 'continuous',
+			 min: 0,
+			 max: 100,
+			 calculable: true,
+			 inRange: {
+			 color: ['#50a3ba', '#eac736', '#d94e5d']
+			 },
+			 },
+			 series: [{
+			 type: 'scatter',
+			 coordinateSystem: 'bmap',
+			 data: carsData,
+			 symbolSize: 4
+			 }]
+
+
+			 });
+			 }
+			 else{
+			 */
+
+            //map.setZoom(11);
+            myChart.chart.setOption(option = {
+				/*GLMap: {
+				 roam: true
+				 },*/
+                visualMap: {	// 视觉映射组件
+                    type: 'continuous',
+                    min: 0,
+                    max: 300,
+                    splitNumber: 5,
+                    //seriesIndex: 0,
+                    calculable: true,
+                    inRange: {
+                        color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+                    }
+                },
+                series: [{
+                    type: 'heatmap',
+                    coordinateSystem: 'GLMap',
+                    data: dataL,
+                    minAlpha: 0.1,
+                    maxOpacity: 1.0,
+                    minOpacity: 0.5,
+                    pointSize: 9,
+                    blurSize: 7,
+                    zlevel:1
+                },
+                    {
+                        name: 'Top5',
+                        type: 'scatter',
+                        symbol:'pin',
+                        coordinateSystem: 'GLMap',
+                        symbolSize: 25,
+                        itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                        data: pointData,
+                        zlevel:3,
+                        animation:false
+                    },
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'GLMap',
+                        data: linesData,
+                        zlevel:1,
+						/*effect: {
+						 show: true,
+						 period: 2,
+						 trailLength: 0.7,
+						 color: 'yellow',
+						 symbolSize: 3,
+						 symbol:'circle',
+						 },*/
+                        lineStyle: {
+                            normal: {
+
+                                color: '#F80000',
+                                width: 2,
+                                curveness: 0.2
+                            }
+                        },
+
+                        blendMode: 'lighter',
+                        animation:false,
+
+                        polyline: false,
+                    },
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'GLMap',
+                        data: linesData,
+                        effect: {
+                            show: true,
+                            constantSpeed: 50,
+                            trailWidth: 4,
+                            trailLength: 0.4,
+                            trailOpacity: 1,
+                            spotIntensity: 10,
+                            curveness: 0.2,
+                            period:2,
+                        },
+
+                        blendMode: 'lighter',
+
+                        polyline: false,
+
+                        lineStyle: {
+                            width: 4,
+                            color: 'rgb(200, 40, 0)',
+                            opacity: 0.,
+                            curveness: 0.2,
+                        },
+                        zlevel: 2,
+                        animation:false
+                    }]}
+            );
+            // }
+
+            counter++;
+        }
+        else {
+            predictionStatus = 0;
+            predictionStart = 0;
+
+            if (id <= 535) {
+                for (var i = 0; i < dataMid.length; i++) {
+                    for (var j = 0; j < 3; j++)
+                        dataMid[i][j] += addition[i][j];
+                }
+            }
+
+            //map.setZoom(11);
+            myChart.chart.setOption(option = {
+				/*GLMap: {
+				 roam: true
+				 },*/
+                visualMap: {	// 视觉映射组件
+                    type: 'continuous',
+                    min: 0,
+                    max: 300,
+                    splitNumber: 5,
+                    //seriesIndex: 0,
+                    calculable: true,
+                    inRange: {
+                        color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+                    }
+                },
+                series: [
+                    {
+                        name: 'Top5',
+                        type: 'scatter',
+                        symbol:'pin',
+                        coordinateSystem: 'GLMap',
+                        symbolSize: 25,
+                        itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                        data: pointData,
+                        animation:false
+                    },
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'GLMap',
+                        data: linesData,
+                        zlevel:1,
+						/*effect: {
+						 show: true,
+						 period: 2,
+						 trailLength: 0.7,
+						 color: 'yellow',
+						 symbolSize: 3,
+						 symbol:'circle',
+						 },*/
+                        lineStyle: {
+                            normal: {
+
+                                color: '#F80000',
+                                width: 2,
+                                curveness: 0.2
+                            }
+                        },
+
+                        blendMode: 'lighter',
+
+                        polyline: false,
+                        animation:false,
+                    },
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'GLMap',
+                        data: linesData,
+                        effect: {
+                            show: true,
+                            constantSpeed: 50,
+                            trailWidth: 4,
+                            trailLength: 0.4,
+                            trailOpacity: 1,
+                            spotIntensity: 10,
+                            curveness: 0.2,
+                            period:2,
+                        },
+
+                        blendMode: 'lighter',
+
+                        polyline: false,
+
+                        lineStyle: {
+                            width: 4,
+                            color: 'rgb(200, 40, 0)',
+                            opacity: 0.,
+                            curveness: 0.2,
+                        },
+                        zlevel: 2,
+                        animation:false
+                    },
+                    {
+                        type: 'heatmap',
+                        coordinateSystem: 'GLMap',
+                        data: dataMid,
+                        minAlpha: 0.1,
+                        maxOpacity: 1.0,
+                        minOpacity: 0.5,
+                        pointSize: 9,
+                        blurSize: 7,
+                        //zlevel:2,
+                    }]
+
+
+            });
+
+            if (counter == 19)
+                counter = 0;
+            else
+                counter += 1;
+        }
+
+        if (isStart == 1)
+        {#            if(counter==0 && predictionCount<=23&& id==predictionTime[predictionCount] && predictionStatus==0){#}
+            {#                myReg = this.setTimeout(requestAnimFrame(animloop),3000);#}
+            {#            }#}
+        myReg = requestAnimFrame(animloop);
+
+        //document.getElementById("timer").innerHTML=lines_list.length;
+    }
+
+    function selectData() {
+        if (id == 536)
+            id = 1;
+        dataL.splice(0, dataL.length);
+        dataMid.splice(0, dataMid.length);
+        dataR.splice(0, dataR.length);
+        addition.splice(0, addition.length);
+        var flag = [];
+        for (var i = 0; i <= 2000; i++)
+            flag.push(0);
+
+        for (var i = lineId; i < length; i++) {
+
+            if (time_id[i] - id > 1) {
+                id++;
+                break;
+            }
+            else if (time_id[i] - id == 1) {
+                if (flag[car_id[i]] == 1) {
+                    var t1 = (cars_list[i][0] - laTmp[car_id[i]]) / 30;
+                    var t2 = (cars_list[i][1] - loTmp[car_id[i]]) / 30;
+                    var t3 = (cars_list[i][2] - spTmp[car_id[i]]) / 30;
+
+                    addition.push(new Array(t1, t2, t3));
+                    dataMid.push(new Array(laTmp[car_id[i]] + t1, loTmp[car_id[i]] + t2, spTmp[car_id[i]] + t3));
+                }
+            }
+            else {
+                flag[car_id[i]] = 1;
+                spTmp[car_id[i]] = cars_list[i][2];
+                dataL.push(cars_list[i]);
+                laTmp[car_id[i]] = cars_list[i][0];
+                loTmp[car_id[i]] = cars_list[i][1];
+                lineId++;
+            }
+
+			/*if(cars_list[i][2]<40)
+			 {
+			 res.push(new Array(cars_list[i][0]-0.001,cars_list[i][1],cars_list[i][2]));
+			 res.push(new Array(cars_list[i][0]+0.001,cars_list[i][1],cars_list[i][2]));
+			 res.push(new Array(cars_list[i][0],cars_list[i][1]-0.001,cars_list[i][2]));
+			 res.push(new Array(cars_list[i][0],cars_list[i][1]+0.001,cars_list[i][2]));
+			 }*/
+            if (i == length - 1 && lineId == length) {
+                lineId = 0;
+                id = 536;
+            }
+        }
+
+        if (id == 536) {
+            for (var i = 0; i < dataL.length; i++) {
+                dataMid.push(dataL[i]);
+            }
+        }
+
+    }
+
+    function loadAnimaton() {
+        id = 1;
+        counter = 0;
+        lineId = 0;
+        isStart = 1;
+        predictionCount = 0;
+        predictionStatus = 0;
+        coordPosition = 0;
+        pointId = 0;
+        predictionStart = 0;
+        predictionIteral = 0;
+
+        linesId=0;
+
+        for (var i = 0; i <= 2000; i++) {
+            spTmp.push(0.0);
+            laTmp.push(0.0);
+            loTmp.push(0.0);
+        }
+        myReg = requestAnimFrame(animloop);
+    }
+
+    function startAnimation() {
+        isStart = 1;
+        myReg = requestAnimFrame(animloop);
+    }
+
+    function stopAnimation() {
+        isStart = 0;
+        //window.cancelAnimFrame(myReq);
+    }
+
+	/*function setBaiduMapZoom(){
+	 bmap.setZoom(16);
+	 }*/
+</script>
+
+<script src="../../static/StreetCrowd/js/ytmenu.js"></script>
+
+</body>
+</html>
