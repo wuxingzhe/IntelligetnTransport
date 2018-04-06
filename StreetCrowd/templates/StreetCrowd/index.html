@@ -7,7 +7,7 @@
     <title>智能交通系统</title>
     <script src="../../static/StreetCrowd/js/jquery.min.js"></script>
     {#    <script src="../../static/StreetCrowd/js/jquery-3.3.1.min.js"></script>#}
-    <script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.js"></script>
+    {#<script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.js"></script>#}
     <script src="../../static/StreetCrowd/js/modernizr.custom.js"></script>
     <script src="../../static/StreetCrowd/echarts/echarts.min.js"></script>
     <script src="../../static/StreetCrowd/js/EchartsLayer.js"></script>
@@ -17,15 +17,12 @@
     <script src="../../static/StreetCrowd/js/mapbox-gl.js"></script>
     <script src="../../static/StreetCrowd/js/popper.min.js"></script>
     <script src="../../static/StreetCrowd/js/leaflet.js"></script>
-    <script src="../../static/StreetCrowd/js/html5shiv.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/default.css"/>
     <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/component.css"/>
     <link rel='stylesheet' href='../../static/StreetCrowd/css/bootstrap.min.css'/>
     <link href='../../static/StreetCrowd/css/mapbox-gl.css' rel='stylesheet'/>
     <link rel='stylesheet' href='../../static/StreetCrowd/css/leaflet.css'/>
-    <link rel="stylesheet" type="text/css" href="../../static/StreetCrowd/css/htmleaf-demo.css">
-    <link rel="stylesheet" href="../../static/StreetCrowd/css/stylePlugin.css">
     <style type="text/css">
         .mapboxgl-ctrl-attrib {
             font-size: 10px;
@@ -60,12 +57,12 @@
             </li>
             <li>
                 <button type="button" class="btn btn-primary dr-icon dr-icon-bullhorn"
-                        onclick="stopAnimation()" style="background-color:#91cfa1;">查看预测结果
+                        onclick="seePredictions()" style="background-color:#91cfa1;">查看预测结果
                 </button>
             </li>
             <li>
                 <button type="button" class="btn btn-primary dr-icon dr-icon-bullhorn"
-                        onclick="stopAnimation()" style="background-color:#91cfa1;">查看拥堵分析
+                        onclick="seeAnalysis()" style="background-color:#91cfa1;">查看拥堵分析
                 </button>
             </li>
             <li>
@@ -182,6 +179,27 @@
                 data: [
                 ],
             }
+            /*
+            [[116.45413855,39.90800323],
+            [116.45482519,39.92057974],
+            [116.45482519,39.89398065],
+            [116.47061803,39.90793987],
+            [116.45207861,39.93321936],
+            [116.45448187,39.94798509],
+            [116.42946295,39.94822129],
+            [116.43044928,39.92294945],
+            [116.43319585,39.90793987],
+            [116.43697241,39.89371742],
+            [116.37174109,39.94874769],
+            [116.37483099,39.90530627],
+            [116.34805182,39.93874545],
+            [116.34839514,39.91820994],
+            [116.34393194,39.88844885],
+            [116.36727789,39.89503428],
+            [116.36085309,39.89582449],
+            [116.31818274,39.93716601]
+            ]
+            */
             /*,
              {
              type: 'lines',
@@ -285,7 +303,7 @@
     var frame_id ={{frame_id|safe}};
     var coord_id ={{coord_id|safe}};
 
-    var predictionTime = new Array(5, 8, 10, 12, 14, 16, 18, 20, 24, 29, 31, 33, 37, 40, 42, 44, 46, 48, 50, 52, 56, 58, 60, 62);
+    var predictionTime = new Array(2,5, 8, 10, 12, 14, 16, 18, 20, 24, 29, 31, 33, 37, 40, 42, 44, 46, 48, 50, 52, 56, 58, 60, 62);
     var predictionCount = 0;
     var predictionStatus = 0;
     var predictionStart = 0;
@@ -322,25 +340,199 @@
         document.getElementById("main").title = JSON.stringify(e.lngLat);
     });
 
+    function seePredictions(){
+        isStart=0;
+        myChart.chart.setOption(option = {
+            GLMap: {},
+            visualMap: {	// 视觉映射组件
+                type: 'continuous',
+                min: 0,
+                max: 300,
+                calculable: true,
+                inRange: {
+                    color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+                }
+            },
+            series: [{
+                name: 'Top5',
+                type: 'effectScatter',
+                coordinateSystem: 'GLMap',
+                symbolSize: 20,
+                rippleEffect: {
+                    period: 5,
+                    scale: 5,
+                    brushType: 'stroke'
+                },
+                data: pointData,
+            },
+                {
+                    name: 'Top5',
+                    type: 'scatter',
+                    symbol:'pin',
+                    coordinateSystem: 'GLMap',
+                    symbolSize: 25,
+                    itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                    data:pointData,
+                },
+                {
+                    type: 'lines',
+                    coordinateSystem: 'GLMap',
+                    data: [],
+                    zlevel:1,
+                    lineStyle: {
+                        normal: {
+
+                            color: '#F80000',
+                            width: 2,
+                            curveness: 0.2
+                        }
+                    },
+
+                    blendMode: 'lighter',
+
+                    polyline: false,
+                },
+                {
+                    type: 'lines',
+                    coordinateSystem: 'GLMap',
+                    data: [],
+                    /*effect: {
+                        show: true,
+                        constantSpeed: 50,
+                        trailWidth: 4,
+                        trailLength: 0.4,
+                        trailOpacity: 1,
+                        spotIntensity: 10,
+                        curveness: 0.2,
+                        period:2,
+                    },*/
+
+                    blendMode: 'lighter',
+
+                    polyline: false,
+
+                    lineStyle: {
+                        width: 4,
+                        color: 'rgb(200, 40, 0)',
+                        opacity: 0.,
+                        curveness: 0.2,
+                    },
+                    zlevel: 2
+                }
+            ]
+
+
+        });
+
+        setTimeout(3000);
+    }
+
+    function seeAnalysis(){
+        isStart=0;
+        myChart.chart.setOption(option = {
+            GLMap: {},
+            visualMap: {	// 视觉映射组件
+                type: 'continuous',
+                min: 0,
+                max: 300,
+                calculable: true,
+                inRange: {
+                    color: ['#1E90FF', '#228B22', '#FFFF00', '#FF8C00', '#FF0000']
+                }
+            },
+            series: [{
+                name: 'Top5',
+                type: 'effectScatter',
+                coordinateSystem: 'GLMap',
+                symbolSize: 20,
+                rippleEffect: {
+                    period: 5,
+                    scale: 5,
+                    brushType: 'stroke'
+                },
+                data: pointData,
+                zlevel:3
+            },
+                {
+                    name: 'Top5',
+                    type: 'scatter',
+                    symbol:'pin',
+                    coordinateSystem: 'GLMap',
+                    symbolSize: 25,
+                    itemStyle:{borderWidth:2,borderColor:'#3058e6'},
+                    data: pointData,
+                    zlevel:4
+                },
+                {
+                    type: 'lines',
+                    coordinateSystem: 'GLMap',
+                    data: linesData,
+                    zlevel:1,
+                    lineStyle: {
+                        normal: {
+
+                            color: '#F80000',
+                            width: 2,
+                            curveness: 0.2
+                        }
+                    },
+
+                    blendMode: 'lighter',
+
+                    polyline: false,
+                },
+                {
+                    type: 'lines',
+                    coordinateSystem: 'GLMap',
+                    data: linesData,
+                    effect: {
+                        show: true,
+                        constantSpeed: 50,
+                        trailWidth: 4,
+                        trailLength: 0.4,
+                        trailOpacity: 1,
+                        spotIntensity: 10,
+                        curveness: 0.2,
+                        period:2,
+                    },
+
+                    blendMode: 'lighter',
+
+                    polyline: false,
+
+                    lineStyle: {
+                        width: 4,
+                        color: 'rgb(200, 40, 0)',
+                        opacity: 0.,
+                        curveness: 0.2,
+                    },
+                    zlevel: 2
+                }
+            ]
+
+
+        });
+
+        setTimeout(3000);
+    }
+
     function animloop() {
-        if(counter==0 && predictionCount<=23&& id==predictionTime[predictionCount] && predictionStatus==0)
+        if(counter==0 && predictionCount<=24&& id==predictionTime[predictionCount] && predictionStatus==0)
         {
-            if(predictionStart==0)
-            {
                 predictionIteral=0;
                 predictionStart=1;
                 coordPosition=0;
                 pointData.splice(0,pointData.length);
                 linesData.splice(0,linesData.length);
+                cnt=predictionTime[1];
+                if(predictionCount<24)
+                    cnt=predictionTime[predictionCount+1];
 
                 var pointTotal=points_list.length;
                 for(var i=pointId;i<pointTotal;i++){
-                    if(frame_id[i]!=id){
+                    if(frame_id[i]!=cnt){
                         predictionCount++;
                         predictionStatus = 1;
-                        break;
-                    }
-                    else if (coord_id[i] != 0) {
                         break;
                     }
 
@@ -354,6 +546,20 @@
                     else
                         pointId++;
                 }
+
+            var lineTotal=lines_list.length;
+            for(var i=linesId;i<lineTotal;i++){
+                if(lines_frame_id[i]!=cnt){
+                    break;
+                }
+
+                linesData.push({coords:lines_list[i]});
+                if(i==lineTotal-1){
+                    linesId=0;
+                }
+                else
+                    linesId++;
+            }
 
                 /*var lineTotal=lines_list.length;
                  for(var i=linesId;i<lineTotal;i++){
@@ -374,7 +580,7 @@
 
                 //map.setZoom(12);
 
-                myChart.chart.setOption(option = {
+                /*myChart.chart.setOption(option = {
                     GLMap: {},
                     visualMap: {	// 视觉映射组件
                         type: 'continuous',
@@ -411,14 +617,6 @@
                             coordinateSystem: 'GLMap',
                             data: [],
                             zlevel:1,
-                            /*effect: {
-                             show: true,
-                             period: 2,
-                             trailLength: 0.7,
-                             color: 'yellow',
-                             symbolSize: 3,
-                             symbol:'circle',
-                             },*/
                             lineStyle: {
                                 normal: {
 
@@ -462,15 +660,15 @@
                     ]
 
 
-                });
+                });*/
 
                 coordPosition = 1;
                 //document.getElementById("timer").innerHTML=linesData.length;
                 //this.sleep(3);
-                setTimeout(function(){requestAnimFrame(animloop)},3000);
-                return
-            }
-            else if (predictionIteral == 0) {
+                //setTimeout(function(){requestAnimFrame(animloop)},3000);
+                //return
+
+            /*else if (predictionIteral == 0) {
                 predictionIteral = 0;
                 var pointTotal=points_list.length;
                 for(var i=pointId;i<pointTotal;i++){
@@ -554,14 +752,6 @@
                             coordinateSystem: 'GLMap',
                             data: linesData,
                             zlevel:1,
-                            /*effect: {
-                             show: true,
-                             period: 2,
-                             trailLength: 0.7,
-                             color: 'yellow',
-                             symbolSize: 3,
-                             symbol:'circle',
-                             },*/
                             lineStyle: {
                                 normal: {
 
@@ -609,10 +799,10 @@
                 //document.getElementById("timer").innerHTML=linesData.length;
                 coordPosition++;
                 //this.sleep(3);
-                setTimeout(function(){requestAnimFrame(animloop)},3000);
-                return
+                //setTimeout(function(){requestAnimFrame(animloop)},3000);
+                //return
                 // setTimeout(animloop,3000);
-            }
+            }*/
             /*else if(predictionIteral==179){
              predictionIteral=0;
              }
@@ -622,6 +812,7 @@
         }
         else if (counter == 0) {
             selectData();
+            predictionStatus = 0;
             //predictionStatus = 0;
             //predictionStart = 0;
             /*if(bmap.getZoom()>15)
@@ -686,23 +877,15 @@
                         coordinateSystem: 'GLMap',
                         symbolSize: 25,
                         itemStyle:{borderWidth:2,borderColor:'#3058e6'},
-                        data: pointData,
+                        data: [],
                         zlevel:3,
                         animation:false
                     },
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
-                        data: linesData,
+                        data: [],
                         zlevel:1,
-                        /*effect: {
-                         show: true,
-                         period: 2,
-                         trailLength: 0.7,
-                         color: 'yellow',
-                         symbolSize: 3,
-                         symbol:'circle',
-                         },*/
                         lineStyle: {
                             normal: {
 
@@ -720,8 +903,8 @@
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
-                        data: linesData,
-                        effect: {
+                        data: [],
+                        /*effect: {
                             show: true,
                             constantSpeed: 50,
                             trailWidth: 4,
@@ -730,7 +913,7 @@
                             spotIntensity: 10,
                             curveness: 0.2,
                             period:2,
-                        },
+                        },*/
 
                         blendMode: 'lighter',
 
@@ -785,22 +968,14 @@
                         coordinateSystem: 'GLMap',
                         symbolSize: 25,
                         itemStyle:{borderWidth:2,borderColor:'#3058e6'},
-                        data: pointData,
+                        data: [],
                         animation:false
                     },
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
-                        data: linesData,
+                        data: [],
                         zlevel:1,
-                        /*effect: {
-                         show: true,
-                         period: 2,
-                         trailLength: 0.7,
-                         color: 'yellow',
-                         symbolSize: 3,
-                         symbol:'circle',
-                         },*/
                         lineStyle: {
                             normal: {
 
@@ -818,8 +993,8 @@
                     {
                         type: 'lines',
                         coordinateSystem: 'GLMap',
-                        data: linesData,
-                        effect: {
+                        data: [],
+                        /*effect: {
                             show: true,
                             constantSpeed: 50,
                             trailWidth: 4,
@@ -828,7 +1003,7 @@
                             spotIntensity: 10,
                             curveness: 0.2,
                             period:2,
-                        },
+                        },*/
 
                         blendMode: 'lighter',
 
