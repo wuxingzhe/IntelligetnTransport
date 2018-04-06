@@ -80,3 +80,7 @@ def upload_data(request):
     name_dict = {"resultCode":200}
     return JsonResponse(name_dict)
     # return redirect('/StreetCrowd')
+
+def help(request):
+    context = {}
+    return render(request, 'StreetCrowd/help.html', context)
